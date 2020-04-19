@@ -41,6 +41,8 @@ object C02_StreamWordCount {
     // 逐一读取数据，分词之后进行wordcount
     val wordCountDataStream: DataStream[(String, Int)] = textDataStream.flatMap(_.split("\\s"))
       .filter(_.nonEmpty)
+      //.filter(_.nonEmpty).disableChaining() // 禁用任务链划分
+      //.filter(_.nonEmpty).startNewChain()     // 开始新的任务链
       .map((_, 1))
       .keyBy(0)
       .sum(1)
