@@ -32,6 +32,8 @@ object C02_StreamWordCount {
 
     // 创建一个流处理的执行环境
     val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+    //env.setParallelism(1)
+    //env.disableOperatorChaining() // 禁用任务链划分
 
     // 接收socket数据流
     val textDataStream: DataStream[String] = env.socketTextStream(host, port)
