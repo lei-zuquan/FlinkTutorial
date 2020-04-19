@@ -13,7 +13,7 @@ import org.apache.flink.api.scala._
  */
 
 // 批处理代码
-object WordCount {
+object C01_WordCount {
   def main(args: Array[String]): Unit = {
     // 创建一个批处理的执行环境
     val env: ExecutionEnvironment = ExecutionEnvironment.getExecutionEnvironment
