@@ -16,6 +16,15 @@ object C02_StreamWordCount {
   def main(args: Array[String]): Unit = {
 
     // --host localhost --port 7777
+    // standalone提交方式：
+    // ./bin/flink run -c com.lei.wc.StreamWordCount -p 2 /usr/local/flink_learn/FlinkTutorial_xxxx.jar --host local --port 7777
+
+    // 列出正在运行的flink作业:
+    // ./bin/flink list
+    // ./bin/flink cancel xxxx_id
+
+    // 查看所有flink作业
+    // ./bin/flink list --all
     val params: ParameterTool = ParameterTool.fromArgs(args)
     val host: String = params.get("host")
     val port: Int = params.getInt("port")
@@ -36,7 +45,7 @@ object C02_StreamWordCount {
 
     // 打印输出，流处理到这里才只是定义了流处理流程
     //wordCountDataStream.print()
-    wordCountDataStream.print().setParallelism(2) // 设置并行度，如果没有指定默认是电脑CPU核心数
+    wordCountDataStream.print().setParallelism(1) // 设置并行度，如果没有指定默认是电脑CPU核心数
 
     // 打印输出，传入job名称
     env.execute("stream word count job")
