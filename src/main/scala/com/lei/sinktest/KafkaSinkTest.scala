@@ -20,7 +20,10 @@ object KafkaSinkTest {
     val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
     env.setParallelism(1)
 
-    val inputStream: DataStream[String] = env.readTextFile("input_dir/sensor.txt")
+    // source
+    //val inputStream: DataStream[String] = env.readTextFile("input_dir/sensor.txt")
+
+    val inputStream: DataStream[String] = env.addSource(MyKafkaUtil.getConsumer("sensor"))
 
     // Transform操作
     val dataStream: DataStream[String] = inputStream.map(data => {

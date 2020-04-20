@@ -28,6 +28,13 @@
             <artifactId>flink-connector-kafka-0.11_2.11</artifactId>
             <version>1.7.0</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.bahir/flink-connector-redis -->
+        <dependency>
+            <groupId>org.apache.bahir</groupId>
+            <artifactId>flink-connector-redis_2.11</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
