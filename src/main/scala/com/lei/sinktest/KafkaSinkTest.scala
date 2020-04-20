@@ -31,7 +31,7 @@ object KafkaSinkTest {
 
     // sink
     // dataStream.addSink(new FlinkKafkaProducer011[String]("node-01:9092", "gmall", new SimpleStringSchema()))
-    dataStream.addSink(MyKafkaUtil.getProducer("gmall"))
+    dataStream.addSink(MyKafkaUtil.getProducer("GMALL_STARTUP"))
     dataStream.print()
 
     env.execute("kafka sink test")

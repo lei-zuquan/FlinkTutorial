@@ -32,7 +32,7 @@ object MyKafkaUtil {
   }
 
   def getProducer(topic: String): FlinkKafkaProducer011[String] = {
-    new FlinkKafkaProducer011[String]("node-01:9092", "gmall", new SimpleStringSchema())
+    new FlinkKafkaProducer011[String](zk_servers, topic, new SimpleStringSchema())
   }
 
 
