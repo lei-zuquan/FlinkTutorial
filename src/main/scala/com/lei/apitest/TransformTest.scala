@@ -1,5 +1,6 @@
 package com.lei.apitest
 
+import org.apache.flink.api.common.functions.{FilterFunction, RichMapFunction}
 import org.apache.flink.api.java.tuple.Tuple
 import org.apache.flink.api.scala._
 import org.apache.flink.streaming.api.scala.{ConnectedStreams, DataStream, KeyedStream, SplitStream, StreamExecutionEnvironment}
@@ -42,46 +43,46 @@ object TransformTest {
       // 输出当前传感器最新的温度+10，而时间戳是上一次数据的时间+1
       .reduce((x, y) => SensorReading(x.id, x.timestamp + 1, y.temperature + 10))
 
-    val aggStream: KeyedStream[SensorReading, Tuple] = dataStream.keyBy(0)
-
-
-
-    // 如下是flink算子在使用scala时，可能导致输出类型不一致问题
-    //val value1: KeyedStream[SensorReading, Tuple] = dataStream.keyBy(0)
-    //val value2: KeyedStream[SensorReading, String] = dataStream.keyBy(_.id)
-
-    aggStream.print()
-
-    // 2.多流转换算子
-    // 分流split
-    val splitStream: SplitStream[SensorReading] = dataStream.split(data => {
-      if (data.temperature > 30) Seq("high") else Seq("low")
-    })
-
-    val high: DataStream[SensorReading] = splitStream.select("high")
-    val low: DataStream[SensorReading] = splitStream.select("low")
-    val all: DataStream[SensorReading] = splitStream.select("high", "low")
-
-    high.print("high")
-    low.print("low")
-    all.print("all")
-
-
-    // 合并两条流
-    // connect合并两条流，两条流数据类型不一致也可以；最多2条流
-    val warningStream: DataStream[(String, Double)] = high.map(data => (data.id, data.temperature))
-    val connectedStream: ConnectedStreams[(String, Double), SensorReading] = warningStream.connect(low)
-
-    val coMapDataStream: DataStream[Product] = connectedStream.map(
-      warningData => (warningData._1, warningData._2, "warning"),
-      lowData => (lowData.id, "healthy")
-    )
-    coMapDataStream.print()
-
-    // union合并流
-    // 多条流数据类型要求一致，数据结构必须一样
-    val unionStream: DataStream[SensorReading] = high.union(low)
-    unionStream.print("union")
+//    val aggStream: KeyedStream[SensorReading, Tuple] = dataStream.keyBy(0)
+//
+//
+//
+//    // 如下是flink算子在使用scala时，可能导致输出类型不一致问题
+//    //val value1: KeyedStream[SensorReading, Tuple] = dataStream.keyBy(0)
+//    //val value2: KeyedStream[SensorReading, String] = dataStream.keyBy(_.id)
+//
+//    aggStream.print()
+//
+//    // 2.多流转换算子
+//    // 分流split
+//    val splitStream: SplitStream[SensorReading] = dataStream.split(data => {
+//      if (data.temperature > 30) Seq("high") else Seq("low")
+//    })
+//
+//    val high: DataStream[SensorReading] = splitStream.select("high")
+//    val low: DataStream[SensorReading] = splitStream.select("low")
+//    val all: DataStream[SensorReading] = splitStream.select("high", "low")
+//
+//    high.print("high")
+//    low.print("low")
+//    all.print("all")
+//
+//
+//    // 合并两条流
+//    // connect合并两条流，两条流数据类型不一致也可以；最多2条流
+//    val warningStream: DataStream[(String, Double)] = high.map(data => (data.id, data.temperature))
+//    val connectedStream: ConnectedStreams[(String, Double), SensorReading] = warningStream.connect(low)
+//
+//    val coMapDataStream: DataStream[Product] = connectedStream.map(
+//      warningData => (warningData._1, warningData._2, "warning"),
+//      lowData => (lowData.id, "healthy")
+//    )
+//    coMapDataStream.print()
+//
+//    // union合并流
+//    // 多条流数据类型要求一致，数据结构必须一样
+//    val unionStream: DataStream[SensorReading] = high.union(low)
+//    unionStream.print("union")
 
     /**
      * Connect与Union区别
@@ -89,9 +90,25 @@ object TransformTest {
      * 2、Connect只能操作两个流，Union可以操作多个。
      */
 
+    // 函数类
+    dataStream.filter(new MyFilter()).print()
+
 
     env.execute("transform test")
 
   }
 
+}
+
+class MyFilter extends FilterFunction[SensorReading] {
+  override def filter(value: SensorReading): Boolean = {
+    value.id.startsWith("sensor_1")
+  }
+}
+
+// 富函数RichMapFunction
+class MyMapper() extends RichMapFunction[SensorReading, String] {
+  override def map(in: SensorReading): String = {
+    "flink"
+  }
 }

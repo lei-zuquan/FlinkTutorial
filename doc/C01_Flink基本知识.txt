@@ -36,7 +36,12 @@ Flink中的执行图可以分成四层：
 
 
 
-
+Flink支持数据类型：
+    1、基础数据类型，Java和Scala基础数据类型
+    2、Java和Scala元组（Tuples)
+    3、Scala样例类（case classes)
+    4、Java简单对象（POJOs)
+    5、其它（Arrays, Lists, Maps, Enums，等等
 
 
 
