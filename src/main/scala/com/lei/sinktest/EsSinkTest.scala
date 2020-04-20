@@ -2,7 +2,7 @@ package com.lei.sinktest
 
 import com.lei.apitest.SensorReading
 import com.lei.util.MyEsUtil
-import org.apache.flink.streaming.api.scala.{DataStream, StreamExecutionEnvironment}
+import org.apache.flink.streaming.api.scala._
 
 /**
  * @Author: Lei
@@ -30,6 +30,7 @@ object EsSinkTest {
 
     // sink
     dataStream.addSink(MyEsUtil.getElasticSearchSink("sensor"))
+    dataStream.print()
 
     env.execute("es sink test")
   }
