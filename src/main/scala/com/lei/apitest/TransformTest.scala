@@ -33,7 +33,7 @@ object TransformTest {
     // 1.基本转换算子和简单聚合算子
     val streamFromFile: DataStream[String] = env.readTextFile("input_dir/sensor.txt")
     streamFromFile.print()
-                                             //env.readTextFile("input_dir/sensor.txt")
+
     val dataStream: DataStream[SensorReading] = streamFromFile.map(data => {
       val dataArray: Array[String] = data.split(",")
       SensorReading(dataArray(0).trim, dataArray(1).trim.toLong, dataArray(2).trim.toDouble)
