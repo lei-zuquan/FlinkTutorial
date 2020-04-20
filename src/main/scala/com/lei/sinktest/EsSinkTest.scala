@@ -1,7 +1,8 @@
-package com.lei.apitest
+package com.lei.sinktest
 
+import com.lei.apitest.SensorReading
 import com.lei.util.MyEsUtil
-import org.apache.flink.streaming.api.scala._
+import org.apache.flink.streaming.api.scala.{DataStream, StreamExecutionEnvironment}
 
 /**
  * @Author: Lei
