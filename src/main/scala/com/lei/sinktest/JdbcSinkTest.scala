@@ -3,6 +3,7 @@ package com.lei.sinktest
 import java.sql.{Connection, DriverManager, PreparedStatement}
 
 import com.lei.apitest.SensorReading
+import com.lei.util.MyJdbcUtil
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.streaming.api.functions.sink.{RichSinkFunction, SinkFunction}
 import org.apache.flink.streaming.api.scala._
@@ -33,7 +34,11 @@ object JdbcSinkTest {
     })
 
     // sink
-    dataStream.addSink(new MyJdbcSink())
+    // dataStream.addSink(new MyJdbcSink())
+
+
+    val jdbcSink = new MyJdbcUtil("insert into temperatures values(?,?)")
+    dataStream.map(sensor => Array(sensor.id, sensor.temperature)).addSink(jdbcSink)
 
     env.execute("jdbc sink test")
   }
@@ -59,7 +64,7 @@ class MyJdbcSink() extends RichSinkFunction[SensorReading]{
   // 初始化，创建连接和预编译语句；sql语句进行了预编译后，执行时效率会更高
   override def open(parameters: Configuration): Unit = {
     super.open(parameters)
-    val url = "jdbc:mysql://localhost:3306/test"
+    val url = "jdbc:mysql://172.19.180.41:3306/test"
     val user = "root"
     val password = "1234"
     conn = DriverManager.getConnection(url, user, password)

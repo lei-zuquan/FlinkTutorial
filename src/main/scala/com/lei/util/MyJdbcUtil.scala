@@ -16,11 +16,11 @@ import org.apache.flink.streaming.api.functions.sink.RichSinkFunction
  * @Modified By:
  * @Description:
  */
-class MyJdbcSink(sql:String ) extends  RichSinkFunction[Array[Any]] {
+class MyJdbcUtil(sql:String ) extends  RichSinkFunction[Array[Any]] {
 
   val driver = "com.mysql.jdbc.Driver"
 
-  val url = "jdbc:mysql://node-01:3306/gmall2019?useSSL=false"
+  val url = "jdbc:mysql://172.19.180.41:3306/test?useSSL=false"
 
   val username = "root"
 
@@ -38,7 +38,6 @@ class MyJdbcSink(sql:String ) extends  RichSinkFunction[Array[Any]] {
     properties.put("username",username)
     properties.put("password",password)
     properties.put("maxActive",maxActive)
-
 
     val dataSource: DataSource = DruidDataSourceFactory.createDataSource(properties)
     connection = dataSource.getConnection()
