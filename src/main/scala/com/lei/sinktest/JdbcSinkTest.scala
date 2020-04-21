@@ -46,14 +46,17 @@ object JdbcSinkTest {
 }
 
 /*
-create database test if not exist
+DROP DATABASE IF EXISTS `test`;
+CREATE DATABASE IF NOT EXISTS `test` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-create table temperatures (
-  sensor varchar(20) not null,
-  temp double not null
+USE `test`;
+
+CREATE TABLE temperatures (
+  sensor VARCHAR(20) NOT NULL,
+  temp DOUBLE NOT NULL
 );
 
-select * from temperatures
+SELECT * FROM temperatures
  */
 class MyJdbcSink() extends RichSinkFunction[SensorReading]{
   // 定义sql连接、预编译器
