@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @Modified By:
  * @Description:
  */
-public class C04_NcClient {
+public class C03_NcClient {
 
         // 定义端口号
         private static final int PORT = 7777;
