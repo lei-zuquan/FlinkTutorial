@@ -64,8 +64,8 @@ class MyJdbcSink() extends RichSinkFunction[SensorReading]{
     val password = "1234"
     conn = DriverManager.getConnection(url, user, password)
 
-    val insertStmt: PreparedStatement = conn.prepareStatement("INSERT INTO temperatures (sensor, temp) VALUES (?, ?)")
-    val updateStmt: PreparedStatement = conn.prepareStatement("UPDATE temperatures SET temp = ? WHERE sensor = ?")
+    insertStmt = conn.prepareStatement("INSERT INTO temperatures (sensor, temp) VALUES (?, ?)")
+    updateStmt = conn.prepareStatement("UPDATE temperatures SET temp = ? WHERE sensor = ?")
   }
 
   // 调用连接，执行sql
