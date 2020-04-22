@@ -21,6 +21,28 @@ import org.apache.flink.util.Collector
       连续数据中如果温度上升，我们判定为有异常，进行报警提示
 
  */
+
+/*
+    ProcessFunctionAPI(底层API)
+    我们之前学习的转换算子是无法访问事件的时间戳信息和水位线信息的。而这在一些应用场景下，极为重要。
+    例如：MapFunction这样的map转换算子就无法访问时间戳或者当前事件的事件时间。
+
+    基于此，DataStream API提供了一系列的Low-Level转换算子。可以访问时间戳、watermark以及注册
+    定时事件。还可以输出特定的一些事件，例如超时事件等。
+    ProcessFunction用来构建事件驱动的应用以及实现自定义的业务逻辑（使用之前的window函数和转换算子
+    无法实现）。例如：Flink SQL就是使用Process Function实现的
+
+    Flink 提供了8个ProcessFunction:
+        ProcessFunction
+        KeyedProcessFunction
+        CoProcessFunction
+        ProcessJoinFunction
+        BroadcastProcessFunction
+        KeyedBroadcastProcessFunction
+        ProcessWindowFunction
+        ProcessAllWindowFunction
+
+ */
 object C04_ProcessFunctionTest {
   def main(args: Array[String]): Unit = {
 
@@ -56,6 +78,39 @@ object C04_ProcessFunctionTest {
 
 }
 
+/*
+    KeyedProcessFunction
+
+    KeyedProcessFunction 用来操作 KeyedStream。KeyedProcessFunction 会处理流
+    的每一个元素，输出为0个、1个或者多个元素。所有的Process Function都继承自
+    RichFunction接口，所以都有open()、close()和getRuntimeContext()等方法。而
+    KeyedProcessFunction[KEY, IN, OUT] 还额外提供了两个方法：
+        precessElement(v: IN, ctx: Context, out: Collect[OUT])
+            流中的每一个元素
+            都会调用这个方法，调用结果将会放在Collector数据类型中输出。Context
+            可以访问元素的时间戳，元素的key，以及TimerService时间服务（可以访问WaterMark）。
+            Context 还可以将结果输出到别的流（side outputs)。
+        onTimer(timestamp:Long, ctx: OnTimerContext, out: Collector[OUT])
+            是一个回调函数(捕捉事件)。当之前注册的定时器触发时调用。参数timestamp为定时器所设定
+            的触发的时间戳。Collector为输出结果的集合。OnTimerContext和processElement
+            的Context参数一样，提供了上下文的一些信息，例如定时器触发的时间信息（事件时间
+            或者处理时间）。
+
+    TimerService和定时器（Timers)
+        Context和OnTimerContext所持有的TimerService对象拥有以下方法：
+            currentProcessingTime():Long返回当前处理时间
+            currentWatermark():Long返回当前watermark的时间戳
+            registerProcessingTimeTimer(timestamp: Long): Unit会注册当前key的
+                processing time的定时器。当processing time到达定时时间时，触发timer.
+            registerEventTimeTimer(timestamp:Long):Unit会注册不前key的event time
+                定时器。当水位线大于等于定时器注册的时间时，触发定时器执行回调函数。
+            deleteProcessingTimeTimer(timestamp: Long):Unit删除之前注册处理时间定时器。
+                如果没有这个时间戳的定时器，则不执行。
+            deleteEventTimeTimer(timestamp: Long):Unit删除之前注册的事件时间定时器，
+                如果没有此时间戳的定时器，则不执行。
+       当定时器timer触发时，会执行回调函数onTimer()。注意定时器timer只能在keyed streams上面使用
+
+ */
 
 class TempIncreAlert() extends KeyedProcessFunction[String, SensorReading, String]{
 
