@@ -110,22 +110,42 @@ object C06_StateTest {
         }
       })
 
+    dataStream.print("input data")
+
     // 温度连续上升报警
     //val processedStream: DataStream[String] = dataStream.keyBy(_.id)
     //  .process(new TempIncreAlert06())
-
-    // 检测某个传感器温度差值不能超过一定限度，需要按传感器id进行分组
-    val processedTempChangeAlertStream: DataStream[(String, Double, Double)] = dataStream.keyBy(_.id)
-      .process(new TempChangeAlert(10.0))
-
-    // 实现方式二：通过flatMap
-    val flatMapChangeAlertStream: DataStream[(String, Double, Double)] = dataStream.keyBy(_.id)
-      .flatMap(new TempChangeAlertFlatMap(10.0))
-
-    dataStream.print("input data")
     //processedStream.print("温度连续上升报警processedStream:")
-    processedTempChangeAlertStream.print("差值超过阈值：")
-    flatMapChangeAlertStream.print("flatMap差值超过阈值：")
+
+    // 状态编程方式一：检测某个传感器温度差值不能超过一定限度，需要按传感器id进行分组
+    //val processedTempChangeAlertStream: DataStream[(String, Double, Double)] = dataStream.keyBy(_.id)
+    //  .process(new TempChangeAlert(10.0))
+    //processedTempChangeAlertStream.print("差值超过阈值：")
+
+    // 状态编程方式二：通过flatMap
+    //val flatMapChangeAlertStream: DataStream[(String, Double, Double)] = dataStream.keyBy(_.id)
+    //  .flatMap(new TempChangeAlertFlatMap(10.0))
+    //flatMapChangeAlertStream.print("flatMap差值超过阈值：")
+
+    // 状态编程方式三：通过flatMapWithState，这是flatMap实现的简化版
+    val processedFlatMapWithState: DataStream[(String, Double, Double)] = dataStream.keyBy(_.id)
+      .flatMapWithState[(String, Double, Double), Double] {
+        // 如果没有状态的话，也就是没有数据来过，那么就将当前数据温度值存入状态
+        case (input: SensorReading, None) => (List.empty, Some(input.temperature))
+        // 如果有状态，就应该与上次的温度值比较差值，如果大于阈值就输出报警
+        case (input: SensorReading, lastTemp: Some[Double]) =>
+          val diff = (input.temperature - lastTemp.get).abs
+          if (diff > 10.0) {
+            (List((input.id, lastTemp.get, input.temperature)), Some(input.temperature))
+          } else {
+            (List.empty, Some(input.temperature))
+          }
+      }
+    processedFlatMapWithState.print("flatMapWithState差值超过阈值：")
+
+
+
+
 
     env.execute("window test")
 
