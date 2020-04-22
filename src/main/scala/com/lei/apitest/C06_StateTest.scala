@@ -1,6 +1,8 @@
 package com.lei.apitest
 
+import org.apache.flink.api.common.functions.RichFlatMapFunction
 import org.apache.flink.api.common.state.{ValueState, ValueStateDescriptor}
+import org.apache.flink.configuration.Configuration
 import org.apache.flink.contrib.streaming.state.RocksDBStateBackend
 import org.apache.flink.runtime.state.filesystem.FsStateBackend
 import org.apache.flink.runtime.state.memory.MemoryStateBackend
@@ -46,7 +48,22 @@ import org.apache.flink.util.Collector
         ProcessAllWindowFunction
 
  */
-object C04_ProcessFunctionTest {
+
+/*
+      温度传感器中，连续两个温度差值超过了10度，则判定为异常，以下就是测试数据及结果
+          input data> SensorReading(sensor_1,1547718199,35.0)
+          flatMap差值超过阈值：> (sensor_1,0.0,35.0)
+          差值超过阈值：> (sensor_1,0.0,35.0)
+          input data> SensorReading(sensor_6,1547718201,18.0)
+          差值超过阈值：> (sensor_6,0.0,18.0)
+          flatMap差值超过阈值：> (sensor_6,0.0,18.0)
+          input data> SensorReading(sensor_1,1547718199,44.0)
+          input data> SensorReading(sensor_6,1547718201,28.0)
+          input data> SensorReading(sensor_1,1547718199,55.0)
+          差值超过阈值：> (sensor_1,44.0,55.0)
+          flatMap差值超过阈值：> (sensor_1,44.0,55.0)
+ */
+object C06_StateTest {
   def main(args: Array[String]): Unit = {
 
 
@@ -57,6 +74,21 @@ object C04_ProcessFunctionTest {
     env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
     // watermark产生的事件间隔(每n毫秒)是通过ExecutionConfig.setAutoWatermarkInterval(...)来定义的
     //env.getConfig.setAutoWatermarkInterval(100L) // 默认200毫秒
+
+    // 默认env是不开启checkpoint
+    //env.enableCheckpointing(1000) // 参加代表间隔多久checkpoint
+    // env 设置状态后端
+    // env.setStateBackend(new MemoryStateBackend())
+    // env.setStateBackend(new FsStateBackend(""))
+    // 如果设置RocksDB还需要引入pom依赖
+    /*
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-statebackend-rocksdb_2.11</artifactId>
+                <version>1.7.2</version>
+            </dependency>
+     */
+    //env.setStateBackend(new RocksDBStateBackend(""))
 
     // source
     val inputStream: DataStream[String] = env.socketTextStream("localhost", 7777)
@@ -78,15 +110,25 @@ object C04_ProcessFunctionTest {
         }
       })
 
-    val processedStream: DataStream[String] = dataStream.keyBy(_.id)
-      .process(new TempIncreAlert())
+    // 温度连续上升报警
+    //val processedStream: DataStream[String] = dataStream.keyBy(_.id)
+    //  .process(new TempIncreAlert06())
+
+    // 检测某个传感器温度差值不能超过一定限度，需要按传感器id进行分组
+    val processedTempChangeAlertStream: DataStream[(String, Double, Double)] = dataStream.keyBy(_.id)
+      .process(new TempChangeAlert(10.0))
+
+    // 实现方式二：通过flatMap
+    val flatMapChangeAlertStream: DataStream[(String, Double, Double)] = dataStream.keyBy(_.id)
+      .flatMap(new TempChangeAlertFlatMap(10.0))
 
     dataStream.print("input data")
-
-    processedStream.print("processedStream:")
+    //processedStream.print("温度连续上升报警processedStream:")
+    processedTempChangeAlertStream.print("差值超过阈值：")
+    flatMapChangeAlertStream.print("flatMap差值超过阈值：")
 
     env.execute("window test")
-      
+
   }
 
 }
@@ -125,7 +167,7 @@ object C04_ProcessFunctionTest {
 
  */
 
-private class TempIncreAlert() extends KeyedProcessFunction[String, SensorReading, String]{
+private class TempIncreAlert06() extends KeyedProcessFunction[String, SensorReading, String]{
 
   // 定义一个状态，用来保存上一个数据的温度值。将之前的数据保存到状态里
   lazy val lastTemp: ValueState[Double] = getRuntimeContext.getState(new ValueStateDescriptor[Double]("lastTemp", classOf[Double]))
@@ -159,5 +201,45 @@ private class TempIncreAlert() extends KeyedProcessFunction[String, SensorReadin
     // 输出报警信息
     out.collect(ctx.getCurrentKey + " 温度连续上升")
     currentTimer.clear()
+  }
+}
+
+
+class TempChangeAlert(threshold: Double) extends KeyedProcessFunction[String, SensorReading, (String, Double, Double)] {
+
+  // 定义一个状态变量，保存上次的温度值
+  lazy val lastTempState: ValueState[Double] = getRuntimeContext.getState(new ValueStateDescriptor[Double]("lastTemp", classOf[Double]))
+
+  override def processElement(value: SensorReading, ctx: KeyedProcessFunction[String, SensorReading, (String, Double, Double)]#Context, out: Collector[(String, Double, Double)]): Unit = {
+    // 获取上次的温度值
+    val lastTemp: Double = lastTempState.value()
+    // 用当前的温度值和上次的求差，如果大于阈值，输出报警信息
+    val diff: Double = (value.temperature - lastTemp).abs
+    if (diff > threshold) {
+      out.collect(value.id, lastTemp, value.temperature)
+    }
+    lastTempState.update(value.temperature) // 将当前温度值更新至状态变量中进行保存
+  }
+}
+
+
+class TempChangeAlertFlatMap(threshold: Double) extends RichFlatMapFunction[SensorReading, (String, Double, Double)] {
+
+  private var lastTempState: ValueState[Double] = _
+
+  override def open(parameters: Configuration): Unit = {
+    // 初始化的时候声明state变量
+    lastTempState = getRuntimeContext.getState(new ValueStateDescriptor[Double]("lastTemp", classOf[Double]))
+  }
+
+  override def flatMap(value: SensorReading, out: Collector[(String, Double, Double)]): Unit = {
+    // 获取上次的温度值
+    val lastTemp: Double = lastTempState.value()
+    // 用当前的温度值和上次的求差，如果大于阈值，输出报警信息
+    val diff: Double = (value.temperature - lastTemp).abs
+    if (diff > threshold) {
+      out.collect(value.id, lastTemp, value.temperature)
+    }
+    lastTempState.update(value.temperature) // 将当前温度值更新至状态变量中进行保存
   }
 }

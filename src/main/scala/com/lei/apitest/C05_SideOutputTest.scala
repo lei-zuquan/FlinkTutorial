@@ -31,11 +31,13 @@ import org.apache.flink.util.Collector
  */
 
 /*
-    大部分的DataStream API的算子的输出是单一输出，也就是某种数据类型的流。
-    除了split算子，可以将一条流分成多条流，这些流的数据类型也都相同。process
-    function 的 side outputs 功能可以产生多条流，并且这些流的数据类型可以不一样。
-    一个side output可以定义为OutputTag[X]对象，X是输出流的数据类型。process
-    function可以通过Context对象发射一个事件到一个或者多个side outputs。
+    Emitting to Side Outputs（侧输出）
+
+        大部分的DataStream API的算子的输出是单一输出，也就是某种数据类型的流。
+        除了split算子，可以将一条流分成多条流，这些流的数据类型也都相同。process
+        function 的 side outputs 功能可以产生多条流，并且这些流的数据类型可以不一样。
+        一个side output可以定义为OutputTag[X]对象，X是输出流的数据类型。process
+        function可以通过Context对象发射一个事件到一个或者多个side outputs。
  */
 object C05_SideOutputTest {
   def main(args: Array[String]): Unit = {
