@@ -75,7 +75,7 @@ object C07_CheckPointTest {
     env.setStateBackend(new RocksDBStateBackend(""))
 
     // source
-    val inputStream: DataStream[String] = env.socketTextStream("localhost", 7777)
+    val inputStream: DataStream[String] =  env.socketTextStream("localhost", 7777)
 
     // Transform操作
     val dataStream: DataStream[SensorReading] = inputStream.map(data => {
