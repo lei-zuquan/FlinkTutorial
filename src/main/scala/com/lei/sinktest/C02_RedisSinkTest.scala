@@ -15,7 +15,7 @@ import org.apache.flink.streaming.connectors.redis.common.mapper.{RedisCommand, 
  * @Modified By:
  * @Description:
  */
-class RedisSinkTest {
+class C02_RedisSinkTest {
 
   def main(args: Array[String]): Unit = {
 

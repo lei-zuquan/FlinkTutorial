@@ -12,7 +12,7 @@ import org.apache.flink.streaming.api.scala._
  * @Modified By:
  * @Description:
  */
-object EsSinkTest {
+object C03_EsSinkTest {
   def main(args: Array[String]): Unit = {
 
     val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment

@@ -14,7 +14,7 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011
  * @Modified By:
  * @Description:
  */
-object KafkaSinkTest {
+object C01_KafkaSinkTest {
   def main(args: Array[String]): Unit = {
 
     val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
