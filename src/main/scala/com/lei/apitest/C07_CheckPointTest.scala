@@ -3,8 +3,8 @@ package com.lei.apitest
 import org.apache.flink.api.common.restartstrategy.RestartStrategies
 import org.apache.flink.api.common.state.{ValueState, ValueStateDescriptor}
 import org.apache.flink.contrib.streaming.state.RocksDBStateBackend
-import org.apache.flink.runtime.state.filesystem.FsStateBackend
-import org.apache.flink.runtime.state.memory.MemoryStateBackend
+//import org.apache.flink.runtime.state.filesystem.FsStateBackend
+//import org.apache.flink.runtime.state.memory.MemoryStateBackend
 import org.apache.flink.streaming.api.environment.CheckpointConfig.ExternalizedCheckpointCleanup
 import org.apache.flink.streaming.api.{CheckpointingMode, TimeCharacteristic}
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction
@@ -71,7 +71,7 @@ object C07_CheckPointTest {
     // 开启一个外部的CheckPoint持久化
     env.getCheckpointConfig.enableExternalizedCheckpoints(ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION)
     // 设置重启策略
-    env.setRestartStrategy(RestartStrategies.failureRateRestart(3, Time.seconds(300), Time.seconds(10)))
+    //env.setRestartStrategy(RestartStrategies.failureRateRestart(3, Time.seconds(300), Time.seconds(10)))
     env.setStateBackend(new RocksDBStateBackend(""))
 
     // source
@@ -95,7 +95,7 @@ object C07_CheckPointTest {
       })
 
     val processedStream: DataStream[String] = dataStream.keyBy(_.id)
-      .process(new TempIncreAlert())
+      .process(new TempIncreAlert07())
 
     dataStream.print("input data")
 
@@ -141,7 +141,7 @@ object C07_CheckPointTest {
 
  */
 
-private class TempIncreAlert() extends KeyedProcessFunction[String, SensorReading, String]{
+private class TempIncreAlert07() extends KeyedProcessFunction[String, SensorReading, String]{
 
   // 定义一个状态，用来保存上一个数据的温度值。将之前的数据保存到状态里
   lazy val lastTemp: ValueState[Double] = getRuntimeContext.getState(new ValueStateDescriptor[Double]("lastTemp", classOf[Double]))

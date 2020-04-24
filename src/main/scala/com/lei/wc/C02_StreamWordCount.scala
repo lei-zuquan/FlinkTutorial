@@ -12,6 +12,14 @@ import org.apache.flink.streaming.api.scala.{DataStream, StreamExecutionEnvironm
  * @Modified By:
  * @Description:
  */
+
+/**
+ * Flink 入门程序 WordCount（实时）
+ *
+ * 对word状态进行实时统计，包含状态监控
+ *
+ */
+
 object C02_StreamWordCount {
   def main(args: Array[String]): Unit = {
 

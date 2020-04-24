@@ -12,6 +12,14 @@ import org.apache.flink.api.scala._
  * @Description:
  */
 
+/**
+ * Flink 入门程序 WordCount（离线）
+ *
+ * 对word状态进行实时统计，包含状态监控
+ *
+ */
+
+
 // 批处理代码
 object C01_WordCount {
   def main(args: Array[String]): Unit = {
