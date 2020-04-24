@@ -15,6 +15,15 @@ import scala.util.Random
  * @Description:
  */
 
+/**
+ * Flink自定义Source:
+ *    1.从定义的集合中读取数据
+ *    2.从文件中读取数据
+ *    3.从Element中读取数据
+ *    4.从Kafka中读取数据
+ *    5.自定义Source
+ *
+ */
 // 生产环境中：将数据包装成样例类
 // 温度传感器读数样例类（传感器id, 时间戳, 温度）
 case class SensorReading(id: String, timestamp: Long, temperature: Double)

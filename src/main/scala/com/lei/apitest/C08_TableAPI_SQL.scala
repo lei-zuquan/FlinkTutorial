@@ -9,7 +9,7 @@ package com.lei.apitest
  * @Description:
  */
 
-/*
+/**
     Table API是流处理和批处理通用的关系型API，Table API可以基于流输入或者
     指输入来运行而不需要进行任何修改。Table API是SQL语言的超集并专门为Apache
     Flink设计的，Table API是Scala和Java语言集成式的API。与常规SQL语言中将

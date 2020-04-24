@@ -12,6 +12,11 @@ import org.apache.flink.streaming.api.scala.{ConnectedStreams, DataStream, Keyed
  * @Modified By:
  * @Description:
  */
+
+/**
+ * Flink流的常规操作拆分与合并
+ *
+ */
 object TransformTest {
   def main(args: Array[String]): Unit = {
     val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment

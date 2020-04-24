@@ -20,8 +20,8 @@ import org.apache.flink.util.Collector
  * @Description:
  */
 
-/*
-      连续数据中如果温度上升，我们判定为有异常，进行报警提示
+/**
+   连续数据中如果温度上升，我们判定为有异常，进行报警提示
 
  */
 
@@ -147,7 +147,7 @@ private class TempIncreAlert() extends KeyedProcessFunction[String, SensorReadin
       ctx.timerService().deleteProcessingTimeTimer(curTimerTs)
       currentTimer.clear()
     } else if (value.temperature > preTemp && curTimerTs == 0){
-      val timerTs: Long = ctx.timerService().currentProcessingTime() + 10000L
+      val timerTs: Long = ctx.timerService().currentProcessingTime() + 1L
       ctx.timerService().registerProcessingTimeTimer(timerTs)
       currentTimer.update(timerTs)
     }

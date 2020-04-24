@@ -17,6 +17,11 @@ import org.apache.flink.util.Collector
  * @Modified By:
  * @Description:
  */
+
+/**
+ * Flink 窗口操作
+ *    materMark 水平线操作
+ */
 object C03_WindowTest {
   def main(args: Array[String]): Unit = {
 

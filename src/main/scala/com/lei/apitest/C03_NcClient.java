@@ -17,6 +17,13 @@ import java.util.concurrent.TimeUnit;
  * @Modified By:
  * @Description:
  */
+
+/**
+ * 模拟nc -lk 7777 输入，达到自动精确控制控制数据
+ *
+ */
+
+
 public class C03_NcClient {
 
         // 定义端口号

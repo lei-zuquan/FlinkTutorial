@@ -15,7 +15,7 @@ import org.apache.flink.util.Collector
  * @Description:
  */
 
-/*
+/**
     侧输出流
     低温流，将温度低于XXX度的数据转移至低温流。
     低于32华氏摄氏度
@@ -65,11 +65,11 @@ object C05_SideOutputTest {
 
 
     //dataStream.print("input data")
-    processedStream.print("processed data") // 不是打印侧输出流，而是侧输出流之后的主流
-    processedStream.getSideOutput(new OutputTag[String]("freezing alert")).print() // 打印侧出流
+    processedStream.print("processed data 正常温度：") // 不是打印侧输出流，而是侧输出流之后的主流
+    //processedStream.getSideOutput(new OutputTag[String]("freezing alert")).print() // 打印侧出流
+    processedStream.getSideOutput(new OutputTag[String]("freezing alert")).printToErr(" 温度已降到风险位：")
 
     env.execute("window test")
-
   }
 }
 

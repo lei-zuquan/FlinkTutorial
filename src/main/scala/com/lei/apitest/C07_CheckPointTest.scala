@@ -22,7 +22,7 @@ import org.apache.flink.util.Collector
  * @Description:
  */
 
-/*
+/**
       连续数据中如果温度上升，我们判定为有异常，进行报警提示
 
  */

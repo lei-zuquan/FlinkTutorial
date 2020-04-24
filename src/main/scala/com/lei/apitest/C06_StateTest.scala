@@ -22,8 +22,8 @@ import org.apache.flink.util.Collector
  * @Description:
  */
 
-/*
-      连续数据中如果温度上升，我们判定为有异常，进行报警提示
+/**
+      连续数据中如果温度上升超过指定温度差，我们判定为有异常，进行报警提示
 
  */
 
@@ -141,16 +141,11 @@ object C06_StateTest {
             (List.empty, Some(input.temperature))
           }
       }
-    processedFlatMapWithState.print("flatMapWithState差值超过阈值：")
-
-
-
-
+    //processedFlatMapWithState.print("flatMapWithState差值超过阈值：")
+    processedFlatMapWithState.printToErr("flatMapWithState 前后温度差值超过阈值 温度上升异常：")
 
     env.execute("window test")
-
   }
-
 }
 
 /*
@@ -209,7 +204,7 @@ private class TempIncreAlert06() extends KeyedProcessFunction[String, SensorRead
       ctx.timerService().deleteProcessingTimeTimer(curTimerTs)
       currentTimer.clear()
     } else if (value.temperature > preTemp && curTimerTs == 0){
-      val timerTs: Long = ctx.timerService().currentProcessingTime() + 10000L
+      val timerTs: Long = ctx.timerService().currentProcessingTime() + 100L
       ctx.timerService().registerProcessingTimeTimer(timerTs)
       currentTimer.update(timerTs)
     }
