@@ -141,12 +141,12 @@ private class TempIncreAlert() extends KeyedProcessFunction[String, SensorReadin
 
     val curTimerTs: Long = currentTimer.value()
 
-    // 温度上升且没有设过定时器，则注册定时器
     if (preTemp > value.temperature || preTemp == 0.0) {
       // 如果温度下降，或是第一条数据，删除定时器并清空状态
       ctx.timerService().deleteProcessingTimeTimer(curTimerTs)
       currentTimer.clear()
     } else if (value.temperature > preTemp && curTimerTs == 0){
+      // 温度上升且没有设过定时器，则注册定时器
       val timerTs: Long = ctx.timerService().currentProcessingTime() + 1L
       ctx.timerService().registerProcessingTimeTimer(timerTs)
       currentTimer.update(timerTs)
