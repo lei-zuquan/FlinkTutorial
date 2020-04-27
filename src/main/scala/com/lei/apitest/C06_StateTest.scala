@@ -28,28 +28,6 @@ import org.apache.flink.util.Collector
  */
 
 /*
-    ProcessFunctionAPI(底层API)
-    我们之前学习的转换算子是无法访问事件的时间戳信息和水位线信息的。而这在一些应用场景下，极为重要。
-    例如：MapFunction这样的map转换算子就无法访问时间戳或者当前事件的事件时间。
-
-    基于此，DataStream API提供了一系列的Low-Level转换算子。可以访问时间戳、watermark以及注册
-    定时事件。还可以输出特定的一些事件，例如超时事件等。
-    ProcessFunction用来构建事件驱动的应用以及实现自定义的业务逻辑（使用之前的window函数和转换算子
-    无法实现）。例如：Flink SQL就是使用Process Function实现的
-
-    Flink 提供了8个ProcessFunction:
-        ProcessFunction
-        KeyedProcessFunction
-        CoProcessFunction
-        ProcessJoinFunction
-        BroadcastProcessFunction
-        KeyedBroadcastProcessFunction
-        ProcessWindowFunction
-        ProcessAllWindowFunction
-
- */
-
-/*
       温度传感器中，连续两个温度差值超过了10度，则判定为异常，以下就是测试数据及结果
           input data> SensorReading(sensor_1,1547718199,35.0)
           flatMap差值超过阈值：> (sensor_1,0.0,35.0)
@@ -75,21 +53,6 @@ object C06_StateTest {
     // watermark产生的事件间隔(每n毫秒)是通过ExecutionConfig.setAutoWatermarkInterval(...)来定义的
     //env.getConfig.setAutoWatermarkInterval(100L) // 默认200毫秒
 
-    // 默认env是不开启checkpoint
-    //env.enableCheckpointing(1000) // 参加代表间隔多久checkpoint
-    // env 设置状态后端
-    // env.setStateBackend(new MemoryStateBackend())
-    // env.setStateBackend(new FsStateBackend(""))
-    // 如果设置RocksDB还需要引入pom依赖
-    /*
-            <dependency>
-                <groupId>org.apache.flink</groupId>
-                <artifactId>flink-statebackend-rocksdb_2.11</artifactId>
-                <version>1.7.2</version>
-            </dependency>
-     */
-    //env.setStateBackend(new RocksDBStateBackend(""))
-
     // source
     val inputStream: DataStream[String] = env.socketTextStream("localhost", 7777)
 
@@ -112,22 +75,25 @@ object C06_StateTest {
 
     dataStream.print("input data")
 
-    // 温度连续上升报警
-    //val processedStream: DataStream[String] = dataStream.keyBy(_.id)
-    //  .process(new TempIncreAlert06())
-    //processedStream.print("温度连续上升报警processedStream:")
+    /* 温度连续上升报警
+    val processedStream: DataStream[String] = dataStream.keyBy(_.id)
+      .process(new TempIncreAlert06())
+    processedStream.print("温度连续上升报警processedStream:")
+     */
 
-    // 状态编程方式一：检测某个传感器温度差值不能超过一定限度，需要按传感器id进行分组
-    //val processedTempChangeAlertStream: DataStream[(String, Double, Double)] = dataStream.keyBy(_.id)
-    //  .process(new TempChangeAlert(10.0))
-    //processedTempChangeAlertStream.print("差值超过阈值：")
+    /* 状态编程方式一：检测某个传感器温度差值不能超过一定限度，需要按传感器id进行分组
+    val processedTempChangeAlertStream: DataStream[(String, Double, Double)] = dataStream.keyBy(_.id)
+      .process(new TempChangeAlert(10.0))
+    processedTempChangeAlertStream.print("差值超过阈值：")
+     */
 
-    // 状态编程方式二：通过flatMap
-    //val flatMapChangeAlertStream: DataStream[(String, Double, Double)] = dataStream.keyBy(_.id)
-    //  .flatMap(new TempChangeAlertFlatMap(10.0))
-    //flatMapChangeAlertStream.print("flatMap差值超过阈值：")
+    /* 状态编程方式二：通过flatMap
+    val flatMapChangeAlertStream: DataStream[(String, Double, Double)] = dataStream.keyBy(_.id)
+      .flatMap(new TempChangeAlertFlatMap(10.0))
+    flatMapChangeAlertStream.print("flatMap差值超过阈值：")
+     */
 
-    // 状态编程方式三：通过flatMapWithState，这是flatMap实现的简化版
+    /* 状态编程方式三：通过flatMapWithState，这是flatMap实现的简化版 */
     val processedFlatMapWithState: DataStream[(String, Double, Double)] = dataStream.keyBy(_.id)
       .flatMapWithState[(String, Double, Double), Double] {
         // 如果没有状态的话，也就是没有数据来过，那么就将当前数据温度值存入状态
@@ -141,46 +107,14 @@ object C06_StateTest {
             (List.empty, Some(input.temperature))
           }
       }
-    //processedFlatMapWithState.print("flatMapWithState差值超过阈值：")
     processedFlatMapWithState.printToErr("flatMapWithState 前后温度差值超过阈值 温度上升异常：")
+
+
 
     env.execute("window test")
   }
 }
 
-/*
-    KeyedProcessFunction
-
-    KeyedProcessFunction 用来操作 KeyedStream。KeyedProcessFunction 会处理流
-    的每一个元素，输出为0个、1个或者多个元素。所有的Process Function都继承自
-    RichFunction接口，所以都有open()、close()和getRuntimeContext()等方法。而
-    KeyedProcessFunction[KEY, IN, OUT] 还额外提供了两个方法：
-        precessElement(v: IN, ctx: Context, out: Collect[OUT])
-            流中的每一个元素
-            都会调用这个方法，调用结果将会放在Collector数据类型中输出。Context
-            可以访问元素的时间戳，元素的key，以及TimerService时间服务（可以访问WaterMark）。
-            Context 还可以将结果输出到别的流（side outputs)。
-        onTimer(timestamp:Long, ctx: OnTimerContext, out: Collector[OUT])
-            是一个回调函数(捕捉事件)。当之前注册的定时器触发时调用。参数timestamp为定时器所设定
-            的触发的时间戳。Collector为输出结果的集合。OnTimerContext和processElement
-            的Context参数一样，提供了上下文的一些信息，例如定时器触发的时间信息（事件时间
-            或者处理时间）。
-
-    TimerService和定时器（Timers)
-        Context和OnTimerContext所持有的TimerService对象拥有以下方法：
-            currentProcessingTime():Long返回当前处理时间
-            currentWatermark():Long返回当前watermark的时间戳
-            registerProcessingTimeTimer(timestamp: Long): Unit会注册当前key的
-                processing time的定时器。当processing time到达定时时间时，触发timer.
-            registerEventTimeTimer(timestamp:Long):Unit会注册不前key的event time
-                定时器。当水位线大于等于定时器注册的时间时，触发定时器执行回调函数。
-            deleteProcessingTimeTimer(timestamp: Long):Unit删除之前注册处理时间定时器。
-                如果没有这个时间戳的定时器，则不执行。
-            deleteEventTimeTimer(timestamp: Long):Unit删除之前注册的事件时间定时器，
-                如果没有此时间戳的定时器，则不执行。
-       当定时器timer触发时，会执行回调函数onTimer()。注意定时器timer只能在keyed streams上面使用
-
- */
 
 private class TempIncreAlert06() extends KeyedProcessFunction[String, SensorReading, String]{
 
@@ -190,7 +124,7 @@ private class TempIncreAlert06() extends KeyedProcessFunction[String, SensorRead
   lazy val currentTimer: ValueState[Long] = getRuntimeContext.getState(new ValueStateDescriptor[Long]("currentTimer", classOf[Long]))
 
 
-  override def processElement(value: SensorReading, ctx: KeyedProcessFunction[String, SensorReading, String]#Context, collector: Collector[String]): Unit = {
+  override def processElement(value: SensorReading, ctx: KeyedProcessFunction[String, SensorReading, String]#Context, out: Collector[String]): Unit = {
     // 先取出上一个温度值
     val preTemp = lastTemp.value()
     // 更新温度值
@@ -204,9 +138,11 @@ private class TempIncreAlert06() extends KeyedProcessFunction[String, SensorRead
       ctx.timerService().deleteProcessingTimeTimer(curTimerTs)
       currentTimer.clear()
     } else if (value.temperature > preTemp && curTimerTs == 0){
-      val timerTs: Long = ctx.timerService().currentProcessingTime() + 100L
-      ctx.timerService().registerProcessingTimeTimer(timerTs)
-      currentTimer.update(timerTs)
+      // 输出报警信息
+      out.collect(ctx.getCurrentKey + " 温度连续上升")
+      //val timerTs: Long = ctx.timerService().currentProcessingTime() + 100L
+      //ctx.timerService().registerProcessingTimeTimer(timerTs)
+      //currentTimer.update(timerTs)
     }
   }
 
@@ -228,6 +164,10 @@ class TempChangeAlert(threshold: Double) extends KeyedProcessFunction[String, Se
   override def processElement(value: SensorReading, ctx: KeyedProcessFunction[String, SensorReading, (String, Double, Double)]#Context, out: Collector[(String, Double, Double)]): Unit = {
     // 获取上次的温度值
     val lastTemp: Double = lastTempState.value()
+    if (lastTemp == 0.0) {
+      lastTempState.update(value.temperature) // 将当前温度值更新至状态变量中进行保存
+      return
+    }
     // 用当前的温度值和上次的求差，如果大于阈值，输出报警信息
     val diff: Double = (value.temperature - lastTemp).abs
     if (diff > threshold) {

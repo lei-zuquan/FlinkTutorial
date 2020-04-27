@@ -92,6 +92,21 @@ object C04_ProcessFunctionTest {
 }
 
 /*
+    富函数（Rich Functions）
+    “富函数”是 DataStream API 提供的一个函数类的接口，所有 Flink 函数类都
+    有其 Rich 版本。它与常规函数的不同在于，可以获取运行环境的上下文，并拥有一
+    些生命周期方法，所以可以实现更复杂的功能。
+         RichMapFunction
+         RichFlatMapFunction
+         RichFilterFunction
+         …
+    Rich Function 有一个生命周期的概念。典型的生命周期方法有：
+         open()方法是 rich function 的初始化方法，当一个算子例如 map 或者 filter被调用之前 open()会被调用。
+         close()方法是生命周期中的最后一个调用的方法，做一些清理工作。
+         getRuntimeContext()方法提供了函数的 RuntimeContext 的一些信息，例如函数执行的并行度，任务的名字，以及 state 状态
+
+ */
+/*
     KeyedProcessFunction
 
     KeyedProcessFunction 用来操作 KeyedStream。KeyedProcessFunction 会处理流
