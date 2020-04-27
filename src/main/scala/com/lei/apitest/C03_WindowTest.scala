@@ -21,6 +21,17 @@ import org.apache.flink.util.Collector
 /**
  * Flink 窗口操作
  *    materMark 水平线操作
+ *
+ */
+/*
+
+sensor_1, 1547718001, 20
+sensor_1, 1547718009, 10
+sensor_1, 1547718010, 9
+sensor_1, 1547718018, 18
+sensor_1, 1547718019, 19
+sensor_1, 1547718020, 20
+
  */
 object C03_WindowTest {
   def main(args: Array[String]): Unit = {
@@ -43,31 +54,36 @@ object C03_WindowTest {
       // 转成String 方便序列化输出
       SensorReading(dataArray(0).trim, dataArray(1).trim.toLong, dataArray(2).trim.toDouble)
     })
-//      .assignAscendingTimestamps(_.timestamp * 1000)
-//      .assignTimestampsAndWatermarks(new MyAssigner())
+      //.assignAscendingTimestamps(_.timestamp * 1000)
+      //.assignTimestampsAndWatermarks(new MyAssigner())
       // 经典写法是：BoundedOutOfOrdernessTimestampExtractor
 
       /*
        延迟一秒钟上涨水位，这样的操作; 比如：timeWindow是10秒，WaterMark设置成1秒，就是当11秒的数据过来时，才会触发窗口结束
        然后一次会继续上一次的水位时间封装消费10秒窗口数据，同时也得满足水位线延迟1秒
-       */
-      .assignTimestampsAndWatermarks(new BoundedOutOfOrdernessTimestampExtractor[SensorReading](Time.seconds(1)) {
+      */
+      .assignTimestampsAndWatermarks(new BoundedOutOfOrdernessTimestampExtractor[SensorReading](Time.seconds(2)) {
         override def extractTimestamp(element: SensorReading): Long = {
           element.timestamp * 1000
         }
       })
 
-    val minTempPerWindowStream: DataStream[(String, Double)] = dataStream
-      .map(data => (data.id, data.temperature))
+    val minTempPerWindowStream = dataStream
+      .map(data => (data.id, data.timestamp, data.temperature))
       .keyBy(_._1)
-      .timeWindow(Time.seconds(10)) // 开时间窗口 // 统计10秒内的最小温度
+      //.timeWindow(Time.seconds(10)) // 开时间窗口 // 统计10秒内的最小温度
       //.timeWindow(Time.seconds(15), Time.seconds(5)) // 统计15秒内的最小温度，隔5秒输出一次；左闭右开【）包含开始，不包含结束
       // timeWindow底层调用的还是window
-      //.window(SlidingEventTimeWindows.of(Time.seconds(15), Time.seconds(5), Time.hours(-8)))
+      .window(SlidingEventTimeWindows.of(Time.seconds(15), Time.seconds(5), Time.hours(-8)))
 
-      .reduce((data1, data2) => (data1._1, data1._2.min(data2._2))) // 用reduce做增量聚合
+      .reduce((data1, data2) => (data1._1, {
+        if (data1._3 < data2._3) {
+          data1._2
+        } else
+          data2._2
+      }, data1._3.min(data2._3))) // 用reduce做增量聚合
 
-    minTempPerWindowStream.print("min temp")
+    minTempPerWindowStream.printToErr("10秒内最小温度min temp： ")
 
     dataStream.print("input data")
 
@@ -90,7 +106,7 @@ object C03_WindowTest {
 //  }
 //
 //  override def extractTimestamp(element: SensorReading, l: Long): Long = {
-//    val maxTs: Long = maxTs.max(element.timestamp * 1000)
+//    maxTs = maxTs.max(element.timestamp * 1000)
 //    element.timestamp * 1000
 //  }
 //}

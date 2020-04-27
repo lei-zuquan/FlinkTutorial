@@ -55,7 +55,7 @@ public class C03_NcClient {
             for (int i = 11; i <= 50; i++) {
                 String value = "sensor_1, 15477181" + i + ", " + (i) + "\n";
                 outputStream.write(value.getBytes());
-                TimeUnit.MILLISECONDS.sleep(2000);
+                TimeUnit.MILLISECONDS.sleep(500);
                 outputStream.flush();
             }
         }
