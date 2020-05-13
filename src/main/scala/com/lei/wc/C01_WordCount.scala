@@ -30,7 +30,7 @@ object C01_WordCount {
     val inputPath = "input_dir/hello.txt"
     val inputDataSet: DataSet[String] = env.readTextFile(inputPath)
 
-    // 分词之后做cout
+    // 分词之后做count
     val wordCountDataSet: AggregateDataSet[(String, Int)] = inputDataSet.flatMap(_.split(" "))
       .map((_, 1))
       .groupBy(0)
