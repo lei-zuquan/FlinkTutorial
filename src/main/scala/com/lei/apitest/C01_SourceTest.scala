@@ -1,6 +1,6 @@
 package com.lei.apitest
 
-import com.lei.util.MyKafkaUtil
+import com.lei.util.{MyKafkaUtil}
 import org.apache.flink.api.scala._
 import org.apache.flink.streaming.api.functions.source.SourceFunction
 import org.apache.flink.streaming.api.scala.{DataStream, StreamExecutionEnvironment}
@@ -46,15 +46,15 @@ object SourceTest {
     //stream2.print("stream1").setParallelism(1)
 
     // 3、从Element中读取数据
-    //env.fromElements(1, 2.0, "String").print()
+    env.fromElements(1, 2.0, "String").print()
 
     // 4、从Kafka中读取数据
-    //val stream3: DataStream[String] = env.addSource(MyKafkaUtil.getConsumer("GMALL_STARTUP"))
-    //stream3.print("stream3").setParallelism(1)
+    val stream3: DataStream[String] = env.addSource(MyKafkaUtil.getConsumer("GMALL_STARTUP"))
+    stream3.print("stream3").setParallelism(1)
 
     // 5、自定义source
-    val stream4: DataStream[SensorReading] = env.addSource(new SensorSource())
-    stream4.print("stream4").setParallelism(1)
+//    val stream4: DataStream[SensorReading] = env.addSource(new SensorSource())
+//    stream4.print("stream4").setParallelism(1)
 
     env.execute("source test")
 

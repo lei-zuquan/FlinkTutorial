@@ -1,7 +1,7 @@
 package com.lei.sinktest
 
 import com.lei.apitest.SensorReading
-import com.lei.util.MyKafkaUtil
+import com.lei.util.J_MyKafkaUtil
 import org.apache.flink.api.common.serialization.SimpleStringSchema
 import org.apache.flink.streaming.api.scala._
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011
@@ -23,7 +23,7 @@ object C01_KafkaSinkTest {
     // source
     //val inputStream: DataStream[String] = env.readTextFile("input_dir/sensor.txt")
 
-    val inputStream: DataStream[String] = env.addSource(MyKafkaUtil.getConsumer("sensor"))
+    val inputStream: DataStream[String] = env.addSource(J_MyKafkaUtil.getConsumer("sensor"))
 
     // Transform操作
     val dataStream: DataStream[String] = inputStream.map(data => {
@@ -34,7 +34,7 @@ object C01_KafkaSinkTest {
 
     // sink
     // dataStream.addSink(new FlinkKafkaProducer011[String]("node-01:9092", "gmall", new SimpleStringSchema()))
-    dataStream.addSink(MyKafkaUtil.getProducer("GMALL_STARTUP"))
+    dataStream.addSink(J_MyKafkaUtil.getProducer("GMALL_STARTUP"))
     dataStream.print()
 
     env.execute("kafka sink test")
