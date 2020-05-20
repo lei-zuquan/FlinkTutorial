@@ -19,8 +19,13 @@ import org.apache.flink.util.Collector
  * @Description:
  */
 
-/**
- * 使用MapState求取每个key对应的平均值
+/*
+  作用
+    用于将每个key对应的数据都保存成一个map集合
+
+  需求
+    使用MapState求取每个key对应的平均值
+
  */
 object MapStateOperate {
 

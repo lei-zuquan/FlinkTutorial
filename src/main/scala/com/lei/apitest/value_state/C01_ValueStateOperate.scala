@@ -17,9 +17,14 @@ import org.apache.flink.util.Collector
  */
 
 
-/**
- * 通过valuestate来实现求取平均值
+/*
+    作用
+      保存一个可以更新和检索的值
+
+    需求
+      通过valuestate来实现求取平均值
  */
+
 object ValueStateOperate {
 
   /**
@@ -45,10 +50,7 @@ object ValueStateOperate {
       .print()
 
     env.execute()
-
   }
-
-
 }
 
 /**
@@ -66,11 +68,7 @@ class  CountWindowAverage extends RichFlatMapFunction[(Long,Double),(Long,Double
     val valueStateDescriptor = new ValueStateDescriptor[(Long,Double)]("average",classOf[(Long,Double)])
 
     sum = getRuntimeContext.getState(valueStateDescriptor)
-
-
-
   }
-
 
   /**
    *
@@ -99,7 +97,5 @@ class  CountWindowAverage extends RichFlatMapFunction[(Long,Double),(Long,Double
       out.collect((input._1,newSum._2/newSum._1))
       // sum.clear()
     }
-
-
   }
 }

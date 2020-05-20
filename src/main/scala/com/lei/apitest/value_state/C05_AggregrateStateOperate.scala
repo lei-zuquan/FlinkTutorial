@@ -14,7 +14,12 @@ import org.apache.flink.util.Collector
  * @Description:
  */
 
-
+/*
+  作用
+    将相同key的数据进行聚合
+  需求
+    将相同key的数据聚合成为一个字符串
+ */
 /**
  * 将相同key的数据聚合成为一个字符串
  */
@@ -82,6 +87,7 @@ class AggregrageState extends RichFlatMapFunction[(Long,Double),(Long,String)]{
     }, classOf[String])
     aggregateTotal = getRuntimeContext.getAggregatingState(aggregateStateDescriptor)
   }
+
   override def flatMap(input: (Long, Double), out: Collector[(Long, String)]): Unit = {
     aggregateTotal.add(input._2)
     out.collect(input._1,aggregateTotal.get())

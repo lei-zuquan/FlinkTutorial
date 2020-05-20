@@ -16,6 +16,11 @@ import scala.collection.mutable.ListBuffer
  * @Description:
  */
 
+/*
+  需求
+    实现每两条数据进行输出打印一次，不用区分数据的key
+    这里使用ListState实现
+ */
 /**
  * 实现每两条数据进行输出打印一次，不用区分数据的key
  */

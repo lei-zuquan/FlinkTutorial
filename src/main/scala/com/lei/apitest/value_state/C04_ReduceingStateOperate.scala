@@ -17,6 +17,12 @@ import org.apache.flink.util.Collector
  * @Description:
  */
 
+/*
+  作用
+    用于数据的聚合
+  需求
+    使用ReducingState求取每个key对应的平均值
+ */
 /**
  * ReducingState<T> ：这个状态为每一个 key 保存一个聚合之后的值
  * get() 获取状态值
@@ -53,12 +59,7 @@ class CountWithReduceingAverageStage extends RichFlatMapFunction[(Long,Double),(
   //定义一个计数器
   var counter=0L
 
-
   override def open(parameters: Configuration): Unit = {
-
-
-
-
     val reduceSum = new ReducingStateDescriptor[Double]("reduceSum", new ReduceFunction[Double] {
       override def reduce(value1: Double, value2: Double): Double = {
         value1+ value2
@@ -71,7 +72,7 @@ class CountWithReduceingAverageStage extends RichFlatMapFunction[(Long,Double),(
   }
   override def flatMap(input: (Long, Double), out: Collector[(Long, Double)]): Unit = {
     //计数器+1
-    counter+=1
+    counter += 1
     //添加数据到reducingState
     reducingState.add(input._2)
 

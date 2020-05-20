@@ -21,12 +21,18 @@ import org.apache.flink.util.Collector
 
 
 
-/**
- * 使用ListState实现平均值求取
- * ListState<T> ：这个状态为每一个 key 保存集合的值
- *      get() 获取状态值
- *      add() / addAll() 更新状态值，将数据放到状态中
- *      clear() 清除状态
+/*
+    作用
+      用于保存每个key的历史数据数据成为一个列表
+
+    需求
+      使用ListState求取数据平均值
+
+   使用ListState实现平均值求取
+   ListState<T> ：这个状态为每一个 key 保存集合的值
+        get() 获取状态值
+        add() / addAll() 更新状态值，将数据放到状态中
+        clear() 清除状态
  */
 object ListStateOperate {
 
@@ -42,13 +48,9 @@ object ListStateOperate {
 
     //保存到rockDB里面去  推荐优选
     //env.setStateBackend(new RocksDBStateBackend("hdfs://node-01:8020/user/root/flink/checkDir",true))
-
-
     /**
      * 配置checkPoint
      */
-
-
     import org.apache.flink.streaming.api.CheckpointingMode
     import org.apache.flink.streaming.api.environment.CheckpointConfig.ExternalizedCheckpointCleanup
     //默认checkpoint功能是disabled的，想要使用的时候需要先启用//默认checkpoint功能是disabled的，想要使用的时候需要先启用
@@ -71,12 +73,6 @@ object ListStateOperate {
      * ExternalizedCheckpointCleanup.DELETE_ON_CANCELLATION: 表示一旦Flink处理程序被cancel后，会删除Checkpoint数据，只有job执行失败的时候才会保存checkpoint
      */
     env.getCheckpointConfig.enableExternalizedCheckpoints(ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION)
-
-
-
-
-
-
 
     import org.apache.flink.api.scala._
     env.fromCollection(List(
