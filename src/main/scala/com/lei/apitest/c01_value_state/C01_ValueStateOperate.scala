@@ -1,4 +1,4 @@
-package com.lei.apitest.value_state
+package com.lei.apitest.c01_value_state
 
 
 import org.apache.flink.api.common.functions.RichFlatMapFunction
