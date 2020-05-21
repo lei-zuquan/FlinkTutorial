@@ -60,9 +60,9 @@ object TransformTest {
 //
 //    // 2.多流转换算子
 //    // 分流split
-//    val splitStream: SplitStream[SensorReading] = dataStream.split(data => {
-//      if (data.temperature > 30) Seq("high") else Seq("low")
-//    })
+    val splitStream: SplitStream[SensorReading] = dataStream.split(data => {
+      if (data.temperature > 30) Seq("high") else Seq("low")
+    })
 //
 //    val high: DataStream[SensorReading] = splitStream.select("high")
 //    val low: DataStream[SensorReading] = splitStream.select("low")
