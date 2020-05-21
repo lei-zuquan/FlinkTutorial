@@ -6,7 +6,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,7 +37,7 @@ public class C03_NcClient {
             System.out.println("[" + simpleDateFormat.format(new Date()) + "]" + socket.getInetAddress() + "已建立连接！");
 
             //监控连接是否断开线程
-            new Thread(new CheckClientThread(socket)).start();
+            //new Thread(new CheckClientThread(socket)).start();
 
             //输出流
             OutputStream outputStream = socket.getOutputStream();

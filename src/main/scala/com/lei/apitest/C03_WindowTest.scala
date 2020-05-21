@@ -123,6 +123,6 @@ class MyAssigner() extends AssignerWithPunctuatedWatermarks[SensorReading] {
 
 class MyProcess() extends KeyedProcessFunction[String, SensorReading, String]{
   override def processElement(value: SensorReading, ctx: KeyedProcessFunction[String, SensorReading, String]#Context, collector: Collector[String]): Unit = {
-    ctx.timerService().registerEventTimeTimer(2000)
+    ctx.timerService().registerEventTimeTimer(0)
   }
 }
