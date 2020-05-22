@@ -2,9 +2,6 @@ package com.lei.apitest
 
 import org.apache.flink.api.common.restartstrategy.RestartStrategies
 import org.apache.flink.api.common.state.{ValueState, ValueStateDescriptor}
-import org.apache.flink.contrib.streaming.state.RocksDBStateBackend
-//import org.apache.flink.runtime.state.filesystem.FsStateBackend
-//import org.apache.flink.runtime.state.memory.MemoryStateBackend
 import org.apache.flink.streaming.api.environment.CheckpointConfig.ExternalizedCheckpointCleanup
 import org.apache.flink.streaming.api.{CheckpointingMode, TimeCharacteristic}
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction
@@ -52,10 +49,10 @@ object C07_CheckPointTest {
     env.getCheckpointConfig.enableExternalizedCheckpoints(ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION)
     // 设置重启策略
     //env.setRestartStrategy(RestartStrategies.failureRateRestart(3, Time.seconds(300), Time.seconds(10)))
-    env.setStateBackend(new RocksDBStateBackend(""))
+    //env.setStateBackend(new RocksDBStateBackend("hdfs://node-01:8020/user/root/flink_checkpoint"))
 
     // source
-    val inputStream: DataStream[String] =  env.socketTextStream("localhost", 7777)
+    val inputStream: DataStream[String] =  env.socketTextStream("node-01", 7777)
 
     // Transform操作
     val dataStream: DataStream[SensorReading] = inputStream.map(data => {
@@ -137,13 +134,13 @@ private class TempIncreAlert07() extends KeyedProcessFunction[String, SensorRead
 
     val curTimerTs: Long = currentTimer.value()
 
-    // 温度上升且没有设过定时器，则注册定时器
+    // 温度下降且没有设过定时器，则注册定时器
     if (preTemp > value.temperature || preTemp == 0.0) {
       // 如果温度下降，或是第一条数据，删除定时器并清空状态
       ctx.timerService().deleteProcessingTimeTimer(curTimerTs)
       currentTimer.clear()
     } else if (value.temperature > preTemp && curTimerTs == 0){
-      val timerTs: Long = ctx.timerService().currentProcessingTime() + 10000L
+      val timerTs: Long = ctx.timerService().currentProcessingTime() + 100L
       ctx.timerService().registerProcessingTimeTimer(timerTs)
       currentTimer.update(timerTs)
     }
