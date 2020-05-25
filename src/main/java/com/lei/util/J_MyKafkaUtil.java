@@ -23,7 +23,7 @@ public class J_MyKafkaUtil {
 
     static {
         prop.setProperty("bootstrap.servers", zk_servers);
-        prop.setProperty("group.id", "gmall");
+        prop.setProperty("group.id", "flink_topic_test_g1");
         prop.setProperty("key,deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         prop.setProperty("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         prop.setProperty("auto.offset.reset", "latest");
@@ -31,11 +31,11 @@ public class J_MyKafkaUtil {
 
 
     public static FlinkKafkaConsumer011<String> getConsumer(String topic) {
-        FlinkKafkaConsumer011<String> myKafkaConsumer = new FlinkKafkaConsumer011<String> (topic, new SimpleStringSchema(), prop);
+        FlinkKafkaConsumer011<String> myKafkaConsumer = new FlinkKafkaConsumer011<> (topic, new SimpleStringSchema(), prop);
         return myKafkaConsumer;
     }
 
     public static FlinkKafkaProducer011<String> getProducer(String topic) {
-        return new FlinkKafkaProducer011<String> (zk_servers, topic, new SimpleStringSchema());
+        return new FlinkKafkaProducer011<> (zk_servers, topic, new SimpleStringSchema());
     }
 }
