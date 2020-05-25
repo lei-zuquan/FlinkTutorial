@@ -1,5 +1,6 @@
 package com.lei.apitest;
 
+import com.lei.domain.J_SensorReading;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;

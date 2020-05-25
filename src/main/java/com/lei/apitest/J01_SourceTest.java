@@ -1,5 +1,6 @@
 package com.lei.apitest;
 
+import com.lei.domain.J_SensorReading;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
@@ -72,26 +73,6 @@ public class J01_SourceTest {
     }
 }
 
-class J_SensorReading {
-    String id;
-    Long timestamp;
-    Double temperature;
-
-    public J_SensorReading(String id, Long timestamp, Double temperature) {
-        this.id = id;
-        this.timestamp = timestamp;
-        this.temperature = temperature;
-    }
-
-    @Override
-    public String toString() {
-        return "J_SensorReading{" +
-                "id='" + id + '\'' +
-                ", timestamp=" + timestamp +
-                ", temperature=" + temperature +
-                '}';
-    }
-}
 
 class J_SensorSource implements SourceFunction<J_SensorReading> {
 

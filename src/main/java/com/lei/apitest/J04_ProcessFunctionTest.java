@@ -1,5 +1,6 @@
 package com.lei.apitest;
 
+import com.lei.domain.J_SensorReading;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
 import org.apache.flink.configuration.Configuration;

@@ -9,6 +9,7 @@ package com.lei.apitest;
  * @Description:
  */
 
+import com.lei.domain.J_SensorReading;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
 import org.apache.flink.configuration.Configuration;

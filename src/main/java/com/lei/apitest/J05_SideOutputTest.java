@@ -12,6 +12,7 @@ package com.lei.apitest;
  * @Description:
  */
 
+import com.lei.domain.J_SensorReading;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
