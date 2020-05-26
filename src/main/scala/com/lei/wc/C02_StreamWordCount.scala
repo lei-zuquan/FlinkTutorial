@@ -22,14 +22,19 @@ import org.apache.flink.streaming.api.scala.{DataStream, StreamExecutionEnvironm
 
 object C02_StreamWordCount {
   def main(args: Array[String]): Unit = {
+    /*
+        注意：需要在服务器对环境变量新增HADOOP_CONF_DIR路径，具体如下：
+            1. vi /etc/profile
+            2. 添加：export HADOOP_CONF_DIR=/etc/hadoop/conf
+     */
 
     // 启动Flink集群：/usr/local/flink_learn/flink-1.7.2/bin/start-cluster.sh
     // 使用WebUI查看Flink集群启动情况：http://node-01:8081/#/overview
 
     // --host localhost --port 7777
-    // standalone提交方式：
-    // ./bin/flink run -c com.lei.wc.StreamWordCount -p 2 /usr/local/flink_learn/FlinkTutorial-1.0.jar --host localhost --port 7777
-    // ./bin/flink run -c com.lei.wc.StreamWordCount -p 2 /usr/local/flink_learn/FlinkTutorial-1.0-jar-with-dependencies.jar --host localhost --port 7777
+    // standalone提交方式：（含后台运行）
+    // ./bin/flink run -c com.lei.wc.C02_StreamWordCount -p 2 /usr/local/spark-study/FlinkTutorial-1.0.jar --host localhost --port 7777
+    // ./bin/flink run -c com.lei.wc.C02_StreamWordCount -p 2 /usr/local/spark-study/FlinkTutorial-1.0-jar-with-dependencies.jar --host localhost --port 7777
 
     // 列出正在运行的flink作业:
     // ./bin/flink list

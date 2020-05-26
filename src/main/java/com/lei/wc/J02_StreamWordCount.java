@@ -14,12 +14,9 @@ import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
-
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
 
 /**
  * Flink 入门程序 WordCount（实时）
@@ -29,16 +26,23 @@ import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
  */
 public class J02_StreamWordCount {
     public static void main(String[] args) throws Exception {
+        /*
+            注意：需要在服务器对环境变量新增HADOOP_CONF_DIR路径，具体如下：
+                1. vi /etc/profile
+                2. 添加：export HADOOP_CONF_DIR=/etc/hadoop/conf
+         */
+
+        // 启动Flink集群：/usr/local/flink_learn/flink-1.7.2/bin/start-cluster.sh
+        // 使用WebUI查看Flink集群启动情况：http://node-01:8081/#/overview
+
         // --host localhost --port 7777
-        // standalone提交方式：
-        // ./bin/flink run -c com.lei.wc.StreamWordCount -p 2 /usr/local/flink_learn/FlinkTutorial_xxxx.jar --host local --port 7777
+        // standalone提交方式：（含后台运行）
+        // ./bin/flink run -c com.lei.wc.J02_StreamWordCount -p 2 /usr/local/spark-study/FlinkTutorial-1.0.jar --host localhost --port 7777
+        // ./bin/flink run -c com.lei.wc.J02_StreamWordCount -p 2 /usr/local/spark-study/FlinkTutorial-1.0-jar-with-dependencies.jar --host localhost --port 7777
 
         // 列出正在运行的flink作业:
         // ./bin/flink list
         // ./bin/flink cancel xxxx_id
-
-        // 查看所有flink作业
-        // ./bin/flink list --all
 
         ParameterTool params = ParameterTool.fromArgs(args);
         String host = params.get("host");
