@@ -23,7 +23,7 @@ object CheckIPChangeWithState {
     import org.apache.flink.api.scala._
 
     //todo:1、接受socket数据源
-    val sourceStream: DataStream[String] = environment.socketTextStream("localhost",9999)
+    val sourceStream: DataStream[String] = environment.socketTextStream("node-01",9999)
 
     //todo:2、数据处理
     sourceStream.map(x => {
