@@ -74,6 +74,7 @@ class LoginCheckProcessFunction extends KeyedProcessFunction[String,(String,User
       // list集合当中每次都只保存了最后一条数据
       logins.add(second)
       listState.update(logins)
+
     }
 
     out.collect(value)
