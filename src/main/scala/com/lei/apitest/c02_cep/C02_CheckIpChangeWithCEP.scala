@@ -30,7 +30,8 @@ object CheckIpChangeWithCEP {
     // 按照用户名进行分组
 
     // 定义CEP当中的pattern
-    val pattern: Pattern[(String, UserLoginInfo), (String, UserLoginInfo)] = Pattern.begin[(String, UserLoginInfo)]("start") //使用begin定义第一个条件
+    val pattern: Pattern[(String, UserLoginInfo), (String, UserLoginInfo)] =
+      Pattern.begin[(String, UserLoginInfo)]("start") //使用begin定义第一个条件
       .where(x => x._2.username != null)
       .next("second") //使用next来定义第二个条件
       .where(new IterativeCondition[(String, UserLoginInfo)] {
@@ -40,9 +41,11 @@ object CheckIpChangeWithCEP {
         * @param context 上下文对象  ==》可以获取满足第一个条件的数据
         * @return
         */
-      override def filter(value: (String, UserLoginInfo), context: IterativeCondition.Context[(String, UserLoginInfo)]): Boolean = {
+      override def filter(value: (String, UserLoginInfo),
+                          context: IterativeCondition.Context[(String, UserLoginInfo)]): Boolean = {
         var flag: Boolean = false
-        val firstValues: util.Iterator[(String, UserLoginInfo)] = context.getEventsForPattern("start").iterator()
+        val firstValues: util.Iterator[(String, UserLoginInfo)]
+        = context.getEventsForPattern("start").iterator()
 
         //满足第一个条件
 
