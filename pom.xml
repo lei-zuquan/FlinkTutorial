@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <flink.version>1.7.2</flink.version>
+        <flink.version>1.10.0</flink.version>
         <!--<spark.version>2.4.0</spark.version>
         <hadoop.version>2.6.0</hadoop.version>-->
         <scala.binary.version>2.11</scala.binary.version>
@@ -67,11 +67,11 @@
             <artifactId>flink-statebackend-rocksdb_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

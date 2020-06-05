@@ -15,9 +15,14 @@ import org.apache.flink.streaming.api.windowing.time.Time
 case class DeviceDetail(sensorMac:String,deviceMac:String,temperature:String,dampness:String,pressure:String,date:String)
 
 // 报警的设备信息样例类
-// 传感器设备mac地址，检测机器mac地址，温度
+
+
 case class AlarmDevice(sensorMac:String,deviceMac:String,temperature:String)
 
+// 在三分钟之内，出现温度高于40度，三次就报警
+// 传感器设备mac地址，检测机器mac地址，温度
+// 传感器设备mac地址，检测机器mac地址，温度，湿度，气压，数据产生时间
+// 00-34-5E-5F-89-A4,00-01-6C-06-A6-29,38,0.52,1.1,2020-03-02 12:20:32
 
 object FlinkTemperatureCEP {
 
@@ -32,7 +37,7 @@ object FlinkTemperatureCEP {
     import org.apache.flink.api.scala._
 
     //接受数据
-    val sourceStream: DataStream[String] = environment.socketTextStream("node01",9999)
+    val sourceStream: DataStream[String] = environment.socketTextStream("node-01",7777)
 
     val deviceStream: KeyedStream[DeviceDetail, String] = sourceStream.map(x => {
       val strings: Array[String] = x.split(",")
@@ -101,12 +106,12 @@ class MyPatternResultFunction extends PatternSelectFunction[DeviceDetail,AlarmDe
   ~~~
   传感器设备mac地址，检测机器mac地址，温度，湿度，气压，数据产生时间
 
-  00-34-5E-5F-89-A4,00-01-6C-06-A6-29,38,0.52,1.1,2020-03-02 12:20:32
-  00-34-5E-5F-89-A4,00-01-6C-06-A6-29,47,0.48,1.1,2020-03-02 12:20:35
-  00-34-5E-5F-89-A4,00-01-6C-06-A6-29,50,0.48,1.1,2020-03-02 12:20:38
-  00-34-5E-5F-89-A4,00-01-6C-06-A6-29,31,0.48,1.1,2020-03-02 12:20:39
-  00-34-5E-5F-89-A4,00-01-6C-06-A6-29,52,0.48,1.1,2020-03-02 12:20:41
-  00-34-5E-5F-89-A4,00-01-6C-06-A6-29,53,0.48,1.1,2020-03-02 12:20:43
-  00-34-5E-5F-89-A4,00-01-6C-06-A6-29,55,0.48,1.1,2020-03-02 12:20:45
-  ~~~
+00-34-5E-5F-89-A4,00-01-6C-06-A6-29,38,0.52,1.1,2020-03-02 12:20:32
+00-34-5E-5F-89-A4,00-01-6C-06-A6-29,47,0.48,1.1,2020-03-02 12:20:35
+00-34-5E-5F-89-A4,00-01-6C-06-A6-29,50,0.48,1.1,2020-03-02 12:20:38
+00-34-5E-5F-89-A4,00-01-6C-06-A6-29,31,0.48,1.1,2020-03-02 12:20:39
+00-34-5E-5F-89-A4,00-01-6C-06-A6-29,52,0.48,1.1,2020-03-02 12:20:41
+00-34-5E-5F-89-A4,00-01-6C-06-A6-29,53,0.48,1.1,2020-03-02 12:20:43
+00-34-5E-5F-89-A4,00-01-6C-06-A6-29,55,0.48,1.1,2020-03-02 12:20:45
+~~~
  */

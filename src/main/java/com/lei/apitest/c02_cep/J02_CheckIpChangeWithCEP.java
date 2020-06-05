@@ -32,7 +32,7 @@ public class J02_CheckIpChangeWithCEP {
         KeyedStream<J_UserLogin, String> keyedStream =
                 sourceStream.map(new J02_MyMapCep()).keyBy(t -> t.username);
 
-        Pattern<J_UserLogin, J_UserLogin> patter = Pattern.<J_UserLogin>begin("start")
+        Pattern<J_UserLogin, J_UserLogin> pattern = Pattern.<J_UserLogin>begin("start")
                 .where(new IterativeCondition<J_UserLogin>() {
                     @Override
                     public boolean filter(J_UserLogin j_userLogin, Context<J_UserLogin> context) throws Exception {
@@ -59,7 +59,7 @@ public class J02_CheckIpChangeWithCEP {
                 }).within(Time.seconds(120));
 
         // 将规则应用到流数据上面去
-        PatternStream<J_UserLogin> patterStream = CEP.pattern(keyedStream, patter);
+        PatternStream<J_UserLogin> patterStream = CEP.pattern(keyedStream, pattern);
 
         // 从patterStream里面获取满足条件的数据
         patterStream.select(new J02_MyPatternSelectFunction()).print();
