@@ -21,7 +21,7 @@ object CheckIpChangeWithCEP {
     val environment: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
     import org.apache.flink.api.scala._
     //todo:1、接受socket数据源
-    val sourceStream: DataStream[String] = environment.socketTextStream("node01",9999)
+    val sourceStream: DataStream[String] = environment.socketTextStream("localhost",7777)
 
     val keyedStream: KeyedStream[(String, UserLoginInfo), String] = sourceStream.map(x => {
       val strings: Array[String] = x.split(",")

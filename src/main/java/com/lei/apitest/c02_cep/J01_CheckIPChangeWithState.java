@@ -12,6 +12,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.util.Collector;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -25,7 +26,7 @@ import java.util.List;
  * @Modified By:
  * @Description:
  */
-class J_UserLogin {
+class J_UserLogin  implements Serializable {
     public String ip;
     public String username;
     public String operateUrl;

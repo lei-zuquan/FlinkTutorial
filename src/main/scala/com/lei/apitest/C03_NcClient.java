@@ -51,12 +51,29 @@ public class C03_NcClient {
 //                outputStream.write(str.getBytes());
 //                outputStream.flush();
 //            }
-            for (int i = 11; i <= 50; i++) {
-                String value = "sensor_1, 15477181" + i + ", " + (i) + "\n";
-                outputStream.write(value.getBytes());
-                TimeUnit.MILLISECONDS.sleep(500);
-                outputStream.flush();
-            }
+//            for (int i = 11; i <= 50; i++) {
+//                String value = "sensor_1, 15477181" + i + ", " + (i) + "\n";
+//                outputStream.write(value.getBytes());
+//                TimeUnit.MILLISECONDS.sleep(500);
+//                outputStream.flush();
+//            }
+            //TimeUnit.SECONDS.sleep(5);
+
+            String value1 = "192.168.145.77,sunwukong,https://icbc.com.cn/save.html,2020-02-12 12:23:52" + "\n";
+            String value2 = "192.168.145.77,sunwukong,https://icbc.com.cn/buy.html,2020-02-12 12:23:58" + "\n";
+            String value3 = "192.168.89.189,sunwukong,https://icbc.com.cn/pay.html,2020-02-12 12:24:05" + "\n";
+            outputStream.write(value1.getBytes());
+
+            outputStream.flush();
+            //TimeUnit.MILLISECONDS.sleep(500);
+            outputStream.write(value2.getBytes());
+            outputStream.flush();
+            //TimeUnit.MILLISECONDS.sleep(500);
+            outputStream.write(value3.getBytes());
+            //TimeUnit.MILLISECONDS.sleep(500);
+            outputStream.flush();
+
+            TimeUnit.SECONDS.sleep(50);
         }
 
         // 监控连接程序是否断开 线程类
