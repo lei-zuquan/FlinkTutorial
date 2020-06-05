@@ -25,7 +25,7 @@ object OrderTimeOutCheckCEP {
     environment.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
     environment.setParallelism(1)
     import org.apache.flink.api.scala._
-    val sourceStream: DataStream[String] = environment.socketTextStream("node01",9999)
+    val sourceStream: DataStream[String] = environment.socketTextStream("node-01",7777)
 
     val keyedStream: KeyedStream[OrderDetail, String] = sourceStream.map(x => {
       val strings: Array[String] = x.split(",")

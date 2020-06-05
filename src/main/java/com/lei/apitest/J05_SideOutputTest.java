@@ -55,7 +55,7 @@ public class J05_SideOutputTest {
 
         // source
         //DataStreamSource<String> inputStream = env.readTextFile("input_dir/sensor.txt");
-        DataStream<String> inputStream = env.socketTextStream("localhost", 7777);
+        DataStream<String> inputStream = env.socketTextStream("node-01", 7777);
 
         // Transform操作
         DataStream<J_SensorReading> dataStream = inputStream.map(data -> {
