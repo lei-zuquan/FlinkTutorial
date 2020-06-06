@@ -1,9 +1,7 @@
 package com.lei.apitest.c02_transformation;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.tuple.Tuple;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
@@ -23,7 +21,7 @@ import org.apache.flink.util.Collector;
  keyBy是shuffle算子
  在Flink中叫redistrute
  */
-public class C06_KeyByDemo2 {
+public class C05_KeyByDemo2 {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
