@@ -36,7 +36,10 @@ public class C04_KafkaSource {
         // props.setProperty("enable.auto.commit", "false");
 
         // kafkaSource
-        FlinkKafkaConsumer<String> kafkaSource = new FlinkKafkaConsumer<>("wc10", new SimpleStringSchema(), props);
+        FlinkKafkaConsumer<String> kafkaSource = new FlinkKafkaConsumer<>(
+                "wc10",
+                new SimpleStringSchema(), // 序列化与反序列化方式
+                props);
 
         // Source
         DataStream<String> lines = env.addSource(kafkaSource);
