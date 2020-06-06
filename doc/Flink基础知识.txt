@@ -49,6 +49,20 @@ Flink支持时间语义：
     3、Processing Time: 执行操作算子的本地系统时间，与机器无关
 
 
+Spark Streaming         Flink
+DStream             DataStream
+Transformation      Transformation
+Action              Sink
+Task                SubTask
+Pipline             Oprator chains
+DAG                 DataFlow Graph
+Master+Driver       JobManager
+Worker+Executor     TaskManager
 
+
+mvn archetype:generate \
+-DarchetypeGroupId=org.apache.flink \
+-DarchetypeArtifactId=flink-quickstart-java \
+-DarchetypeVersion=1.10.0
 
 
