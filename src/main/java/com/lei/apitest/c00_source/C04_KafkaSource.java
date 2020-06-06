@@ -20,7 +20,7 @@ import java.util.Properties;
 /*
   从kafka中读取数据的Source,可以并行的Source，并且可以实现ExactlyOnce
  */
-public class C03_KafkaSource {
+public class C04_KafkaSource {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
