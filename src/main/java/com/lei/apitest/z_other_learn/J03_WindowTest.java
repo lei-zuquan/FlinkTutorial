@@ -1,4 +1,4 @@
-package com.lei.apitest;
+package com.lei.apitest.z_other_learn;
 
 import com.lei.domain.J_SensorReading;
 import org.apache.flink.api.common.functions.ReduceFunction;
