@@ -53,6 +53,7 @@ Spark Streaming         Flink
 DStream             DataStream
 Transformation      Transformation
 Action              Sink
+Stage               Task
 Task                SubTask
 Pipline             Oprator chains
 DAG                 DataFlow Graph
