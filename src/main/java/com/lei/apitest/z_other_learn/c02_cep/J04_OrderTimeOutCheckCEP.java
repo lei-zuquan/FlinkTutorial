@@ -1,4 +1,4 @@
-package com.lei.apitest.c02_cep;
+package com.lei.apitest.z_other_learn.c02_cep;
 
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.flink.api.common.functions.MapFunction;

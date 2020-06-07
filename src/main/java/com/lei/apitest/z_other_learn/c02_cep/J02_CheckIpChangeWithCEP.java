@@ -1,4 +1,4 @@
-package com.lei.apitest.c02_cep;
+package com.lei.apitest.z_other_learn.c02_cep;
 
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.cep.CEP;

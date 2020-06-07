@@ -1,4 +1,4 @@
-package com.lei.apitest.c01_value_state;
+package com.lei.apitest.z_other_learn.c01_value_state;
 
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
