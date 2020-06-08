@@ -34,7 +34,7 @@ import java.util.Properties;
 // 如果EventTime有数据缓慢到来，则会出现数据积压的问题；
 // EventTime使用场景就是数据源源不断地产生。
 
-public class C09_EventTimeTumblingWindow {
+public class C09_KafkaSourceEventTimeTumblingWindow {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -64,7 +64,7 @@ public class C09_EventTimeTumblingWindow {
         // 1000,spark,3
         // 1100,hadoop,2
         // 仅仅只是提取时间字段，不会改变数据的样式
-        SingleOutputStreamOperator<String> lines = env.socketTextStream("localhost", 7777)
+        SingleOutputStreamOperator<String> lines = kafkaLines//env.socketTextStream("localhost", 7777)
                 .assignTimestampsAndWatermarks(new BoundedOutOfOrdernessTimestampExtractor<String>(Time.seconds(0)) {
                     // 将数据中的时间字段提取出来，然后转成long类型
                     @Override
@@ -87,7 +87,7 @@ public class C09_EventTimeTumblingWindow {
         });
 
         // 先分组，再划分窗口
-        KeyedStream<Tuple2<String, Integer>, Tuple> keyed = wordAndCount.keyBy(1);
+        KeyedStream<Tuple2<String, Integer>, Tuple> keyed = wordAndCount.keyBy(0);
 
         // 划分窗口
         WindowedStream<Tuple2<String, Integer>, Tuple, TimeWindow> window = keyed.window(TumblingEventTimeWindows.of(Time.seconds(5)));
@@ -96,6 +96,6 @@ public class C09_EventTimeTumblingWindow {
 
         summed.print();
 
-        env.execute("C08_EventTimeSessionWindow");
+        env.execute("C09_KafkaSourceEventTimeTumblingWindow");
     }
 }
