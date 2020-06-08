@@ -26,9 +26,9 @@ public class DataToActivityBeanFunction extends RichMapFunction<String, Activity
         // 创建MySQL连接
         // 这里不应该对异常进行捕获，让Flink自行处理，比如重启之类的
         // 如果捕获异常了，则Flink无法捕获到该异常
-        String url = "jdbc://mysql://localhost:3306/bigdata?characterEncoding=UTF-8";
+        String url = "jdbc:mysql://localhost:3306/flink_big_data?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false";
         String user = "root";
-        String password = "123456";
+        String password = "1234";
         connection = DriverManager.getConnection(url, user, password);
     }
 
@@ -41,7 +41,7 @@ public class DataToActivityBeanFunction extends RichMapFunction<String, Activity
 
         // 根据aid作为查询条件查询出name
         // 最好使用简单的关联查询，MySQL也可以进行关联查询
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT name FROM t_activities WHERE id = ?");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT name FROM t_activities WHERE a_id = ?");
         preparedStatement.setString(1, aid);
         ResultSet resultSet = preparedStatement.executeQuery();
         String name = null;

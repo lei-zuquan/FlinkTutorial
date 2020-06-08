@@ -4,6 +4,7 @@ import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 
 import java.util.Properties;
 
@@ -36,7 +37,7 @@ public class FlinkUtilsV1 {
         // props.setProperty("enable.auto.commit", "false");
 
         // kafkaSource
-        FlinkKafkaConsumer<String> kafkaSource = new FlinkKafkaConsumer<>(
+        FlinkKafkaConsumer011<String> kafkaSource = new FlinkKafkaConsumer011<>(
                 topic,
                 new SimpleStringSchema(), // 序列化与反序列化方式
                 props);

@@ -5,6 +5,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 
 import java.util.Properties;
 
@@ -26,18 +27,21 @@ public class C04_KafkaSource {
 
         Properties props = new Properties();
 
+        // activity10 group_id_flink node-01:9092,node-02:9092,node-03:9092
         // 指定Kafka的Broker地址
-        props.setProperty("bootstrap.servers", "node-01:9092,node-02:9092,node-03:90902");
+        props.setProperty("bootstrap.servers", "node-01:9092,node-02:9092,node-03:9092");
         // 提定组ID
-        props.setProperty("group.id", "gwc10");
+        props.setProperty("group.id", "group_id_flink");
         // 如果没有记录偏移量，第一次从开始消费
         props.setProperty("auto.offset.reset", "earliest");
+        props.setProperty("key,deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.setProperty("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         // kafka的消费者不自动提交偏移量，默认kafka自动提交offset,且保存在__consumer_offsets
         // props.setProperty("enable.auto.commit", "false");
 
         // kafkaSource
-        FlinkKafkaConsumer<String> kafkaSource = new FlinkKafkaConsumer<>(
-                "wc10",
+        FlinkKafkaConsumer011<String> kafkaSource = new FlinkKafkaConsumer011<>(
+                "activity10",
                 new SimpleStringSchema(), // 序列化与反序列化方式
                 props);
 
