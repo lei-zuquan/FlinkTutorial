@@ -50,7 +50,9 @@ public class C02_AsyncGeoToActivityBeanFunction extends RichAsyncFunction<String
     @Override
     public void close() throws Exception {
         super.close();
-        httpClient.close();
+        if (httpClient != null) {
+            httpClient.close();
+        }
     }
 
     @Override
