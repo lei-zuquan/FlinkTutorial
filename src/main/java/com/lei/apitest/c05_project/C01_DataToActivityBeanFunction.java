@@ -18,7 +18,9 @@ import java.sql.ResultSet;
  * @Description:
  */
 public class C01_DataToActivityBeanFunction extends RichMapFunction<String, ActivityBean> {
+
     private Connection connection = null;
+
     @Override
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);

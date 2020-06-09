@@ -18,6 +18,7 @@ public class ActivityBean {
     public double longitude;
     public double latitude;
     public String province;
+    public int count = 1;
 
     public ActivityBean() {
     }
@@ -53,6 +54,7 @@ public class ActivityBean {
                 ", longitude=" + longitude +
                 ", latitude=" + latitude +
                 ", province='" + province + '\'' +
+                ", count=" + count +
                 '}';
     }
 
