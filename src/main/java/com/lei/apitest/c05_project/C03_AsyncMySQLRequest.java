@@ -33,13 +33,17 @@ public class C03_AsyncMySQLRequest extends RichAsyncFunction<String, String> {
     @Override
     public void open(Configuration parameters) throws Exception {
         //super.open(parameters);
-        executorService = Executors.newFixedThreadPool(20);
+        executorService = Executors.newFixedThreadPool(30);
+
+        String url = "jdbc:mysql://localhost:3306/flink_big_data?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false";
+        String user = "root";
+        String password = "1234";
 
         dataSource = new DruidDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUsername("root");
-        dataSource.setPassword("1234");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/bigdata?characterEncoding=UTF-8");
+        dataSource.setUsername(user);
+        dataSource.setPassword(password);
+        dataSource.setUrl(url);
         dataSource.setInitialSize(5);
         dataSource.setMinIdle(10);
         dataSource.setMaxActive(20);
@@ -48,7 +52,13 @@ public class C03_AsyncMySQLRequest extends RichAsyncFunction<String, String> {
     @Override
     public void close() throws Exception {
         super.close();
-        executorService.shutdown();
+        if (executorService != null) {
+            executorService.shutdown();
+        }
+        if (dataSource != null) {
+            dataSource.close();
+        }
+
     }
 
     @Override
@@ -72,7 +82,7 @@ public class C03_AsyncMySQLRequest extends RichAsyncFunction<String, String> {
     }
 
     private String queryFromMySql(String param) throws SQLException {
-        String sql = "SELECT id, name FROM t_data WHERE id = ?";
+        String sql = "SELECT name FROM t_activities WHERE a_id = ?";
         String result = null;
 
         Connection connection = null;
@@ -100,6 +110,8 @@ public class C03_AsyncMySQLRequest extends RichAsyncFunction<String, String> {
 
         if (result != null) {
             // 放入缓存中
+        } else {
+            return "null";
         }
         return result;
     }
