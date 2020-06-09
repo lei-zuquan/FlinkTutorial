@@ -93,6 +93,8 @@ public class ESUtil {
                 if (client == null) {
                     try {
 
+                        //解决netty冲突
+                        System.setProperty("es.set.netty.runtime.available.processors", "false");
                         // 指定ES集群
                         // 在配置文件vi /opt/elasticsearch-6.2.4/config/elasticsearch.yml
                         // cluster.name: my-application (需要打开)

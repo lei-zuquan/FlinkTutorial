@@ -20,9 +20,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class C03_AsyncEsRequest_Test {
     public static void main(String[] args) throws Exception {
-        //解决netty冲突
-        System.setProperty("es.set.netty.runtime.available.processors", "false");
-
         // 输入参数：activity10 group_id_flink node-01:9092,node-02:9092,node-03:9092
         DataStream<String> lines = FlinkUtilsV1.createKafkaStream(args, new SimpleStringSchema());
 
@@ -33,6 +30,6 @@ public class C03_AsyncEsRequest_Test {
 
         result.print();
 
-        FlinkUtilsV1.getEnv().execute("C02_AsyncQueryActivityLocation");
+        FlinkUtilsV1.getEnv().execute("C03_AsyncEsRequest_Test");
     }
 }
