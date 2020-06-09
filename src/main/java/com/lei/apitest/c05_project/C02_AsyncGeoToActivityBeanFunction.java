@@ -50,6 +50,7 @@ public class C02_AsyncGeoToActivityBeanFunction extends RichAsyncFunction<String
     @Override
     public void close() throws Exception {
         super.close();
+        httpClient.close();
     }
 
     @Override
@@ -62,7 +63,7 @@ public class C02_AsyncGeoToActivityBeanFunction extends RichAsyncFunction<String
         double longitude = Double.parseDouble(fields[4]);
         double latitude = Double.parseDouble(fields[5]);
 
-        String url = "https://restapi.amap.com/v3/geocode/regeo?key=4924f7ef5c86a278f5500851541cd";
+        String url = "https://restapi.amap.com/v3/geocode/regeo?key=4924f7ef5c86a278f5500851541cdcff&location=" + longitude +"," + latitude;
         HttpGet httpGet = new HttpGet(url);
         Future<HttpResponse> future = httpClient.execute(httpGet, null);
 
