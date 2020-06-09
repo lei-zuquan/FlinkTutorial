@@ -54,8 +54,19 @@ public class C03_AsyncHttpRequest extends RichAsyncFunction<String, String> {
     }
 
     @Override
-    public void asyncInvoke(String s, ResultFuture<String> resultFuture) throws Exception {
-        String url = "";//https://restapi.amap.com/v3/geocode/regeo?key=4924f7ef5c86a278f5500851541cdcff&location=" + longitude +"," + latitude;
+    public void asyncInvoke(String line, ResultFuture<String> resultFuture) throws Exception {
+        String[] fields = line.split(",");
+//        String uid = fields[0];
+//        String aid = fields[1];
+//        String time = fields[2];
+//        int eventType = Integer.parseInt(fields[3]);
+        double longitude = Double.parseDouble(fields[4]);
+        double latitude = Double.parseDouble(fields[5]);
+
+//        double longitude = 116.311805;
+//        double latitude = 40.028572;
+
+        String url = "https://restapi.amap.com/v3/geocode/regeo?key=4924f7ef5c86a278f5500851541cdcff&location=" + longitude +"," + latitude;
         HttpGet httpGet = new HttpGet(url);
         Future<HttpResponse> future = httpClient.execute(httpGet, null);
 
