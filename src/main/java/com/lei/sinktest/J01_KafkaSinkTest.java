@@ -1,6 +1,6 @@
 package com.lei.sinktest;
 
-import com.lei.apitest.SensorReading;
+import com.lei.domain.J_SensorReading;
 import com.lei.util.J_MyKafkaUtil;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -56,7 +56,7 @@ public class J01_KafkaSinkTest {
         DataStream<String> dataStream = inputStream.map(data -> {
             String[] dataArray = data.split(",");
             // 转成String 方便序列化输出
-            return new SensorReading(dataArray[0].trim(), Long.valueOf(dataArray[1].trim()), Double.valueOf(dataArray[2].trim())).toString();
+            return new J_SensorReading(dataArray[0].trim(), Long.valueOf(dataArray[1].trim()), Double.valueOf(dataArray[2].trim())).toString();
         });
 
         // sink

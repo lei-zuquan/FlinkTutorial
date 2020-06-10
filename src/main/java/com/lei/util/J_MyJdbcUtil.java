@@ -31,7 +31,7 @@ public class J_MyJdbcUtil extends RichSinkFunction<J_SensorReading> {
     public void open(Configuration parameters) throws Exception {
         // super.open(parameters);
         // 获取连接池对象
-        DataSource dataSource = DruidDataSourceFactory.createDataSource(ConfigurationManager.getProp());
+        DataSource dataSource = DruidDataSourceFactory.createDataSource(J_ConfigurationManager.getProp());
         connection = dataSource.getConnection();
         // 一定要注意druid.properties配置文件中的参数名一定要和上表中的名称相一致，如连接数据库的用户名为username，否则会报错。
     }
