@@ -24,6 +24,7 @@ public class C05_RestartStrategiesDemo {
 
         // 默认的重启策略是固定延迟无限重启
         //env.getConfig().setRestartStrategy(RestartStrategies.fallBackRestart());
+        // 设置固定延迟固定次数重启
         env.getConfig().setRestartStrategy(RestartStrategies.fixedDelayRestart(3, 10000));
 
         DataStreamSource<String> lines = env.socketTextStream("node-01", 7777);
