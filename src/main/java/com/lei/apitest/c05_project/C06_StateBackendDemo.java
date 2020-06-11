@@ -31,8 +31,8 @@ public class C06_StateBackendDemo {
 
         // 默认的重启策略是固定延迟无限重启
         //env.getConfig().setRestartStrategy(RestartStrategies.fallBackRestart());
-        // 设置固定延迟固定次数重启
-        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, 10000));
+        // 设置固定延迟固定次数重启，默认是无限重启
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, 1000));
 
         // 设置状态数据存储的后端，本地文件系统
         env.setStateBackend(new FsStateBackend("file:\\\\lei_test_project\\idea_workspace\\FlinkTutorial\\out_put_dir"));

@@ -102,6 +102,6 @@ public class C06_StateBackendDemo2 {
 
         summed.print();
 
-        env.execute("C06_StateBackendDemo");
+        env.execute("C06_StateBackendDemo2");
     }
 }
