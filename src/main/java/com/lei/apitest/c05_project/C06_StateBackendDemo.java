@@ -35,7 +35,7 @@ public class C06_StateBackendDemo {
         env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, 1000));
 
         // 设置状态数据存储的后端，本地文件系统
-        env.setStateBackend(new FsStateBackend("file:\\\\lei_test_project\\idea_workspace\\FlinkTutorial\\out_put_dir"));
+        env.setStateBackend(new FsStateBackend("file:\\\\lei_test_project\\idea_workspace\\FlinkTutorial\\check_point_dir"));
         // 生产环境将StateBackend保存到分布式文件系统
         //env.setStateBackend(new FsStateBackend("hdfs://node-01:8020/user/root/sqoop/flink_state_backend"));
 

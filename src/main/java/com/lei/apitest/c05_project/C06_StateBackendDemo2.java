@@ -81,7 +81,7 @@ public class C06_StateBackendDemo2 {
 
         // 设置状态数据存储的后端，本地文件系统
         // 生产环境将StateBackend保存到分布式文件系统，且flink不建议在代码里写checkpoint目录代码，通过flink配置文件进行指定
-        //env.setStateBackend(new FsStateBackend("hdfs://node-01:8020/user/root/sqoop/flink_state_backend"));
+        //env.setStateBackend(new FsStateBackend("hdfs://node-01:8020/user/root/sqoop/check_point_dir"));
         //env.setStateBackend(new FsStateBackend(args[0]));
 
         // 程序异常退出或人为cancel掉，不删除checkpoint的数据
