@@ -1,8 +1,10 @@
 package com.lei.apitest.c05_project;
 
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.runtime.state.filesystem.FsStateBackend;
 import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
@@ -54,6 +56,23 @@ public class C10_KafkaSourceV2 {
 
         // Flink CheckPoint成功后还要向Kafka特殊的topic中写入偏移量
         kafkaSource.setCommitOffsetsOnCheckpoints(false);
+
+        DataStreamSource<String> words = env.socketTextStream("localhost", 7777);
+        words.map(new MapFunction<String, String>() {
+            @Override
+            public String map(String value) throws Exception {
+                if (value.startsWith("null")) {
+                    System.out.println( 1 /0);
+                }
+                return value;
+            }
+        }).print();
+
+        // Source
+        DataStreamSource<String> lines = env.addSource(kafkaSource);
+
+        // Sink
+        lines.print();
 
         env.execute("C10_KafkaSourceV2");
     }
