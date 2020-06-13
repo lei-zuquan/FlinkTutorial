@@ -27,6 +27,31 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 
 --group.id g_10 --topics s1,s2
 
+测试消费Kafka中的数据实现ExactlyOnce
+【提交至集群测试】
+
+将redis停掉
+redis-cli
+AUTH 123456
+
+SHUTDOWN save  // 停掉且将数据保存
+
+继续向kafka输入数据:spark spark hadoop hadoop
+
+然后重启redis
+
+查看redis数据结果是否正确
+
+==========
+2.将flink 任务cancel掉，再重新启动
+
+    a.将flink 任务cancel掉
+    b.继续向kafka输入数据，spark spark hadoop hadoop
+    c.重启任务，并指定checkPoint目录（恢复）
+    d.查看结果是否正常
+
+barry机制，栅栏，保证任务全启完成后，才会更新偏移量
+
  */
 public class C10_FlinkKafkaToRedis {
     public static void main(String[] args) throws Exception {

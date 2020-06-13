@@ -39,7 +39,7 @@ public class FlinkUtils {
 
         // 开启CheckPointing，同时开启重启策略
         env.enableCheckpointing(parameters.getLong("checkpoint-interval", 5000L), CheckpointingMode.EXACTLY_ONCE);
-        // 设置固定延迟固定次数重启
+        // 设置固定延迟固定次数重启，默认无限重启
         env.getConfig().setRestartStrategy(RestartStrategies.fixedDelayRestart(3, 2000));
         // 设置StateBackend，生产环境不建议写在这里，建议写在flink-conf.yaml配置文件中；默认保存到内存里面
         // env.setStateBackend(new FsStateBackend("ile:\\\\lei_test_project\\idea_workspace\\FlinkTutorial\\check_point_dir"));
