@@ -1,0 +1,50 @@
+
+首先Kafka在0.11+版本后，支持事务，就是可以预先提交；如果后续成功操作，再次提交确认信息即可，以达到避免脏数据问题
+
+FlinkKafkaProducer 正是借鉴了此设计，采用两阶段提交达到精确Exactly-Once
+
+public class FlinkKafkaProducer<IN>
+	extends TwoPhaseCommitSinkFunction<IN, FlinkKafkaProducer.KafkaTransactionState, FlinkKafkaProducer.KafkaTransactionContext> {
+        	protected abstract void invoke(TXN transaction, IN value, Context context) throws Exception;
+
+        	protected abstract void preCommit(TXN transaction) throws Exception;
+
+            // 5.KafkaProducer被两阶段调用commit完成二次提交
+        	protected abstract void commit(TXN transaction);
+	}
+
+public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
+		extends RichSinkFunction<IN>
+		implements CheckpointedFunction, CheckpointListener{
+
+        	protected abstract void invoke(TXN transaction, IN value, Context context) throws Exception;
+
+        	protected abstract void preCommit(TXN transaction) throws Exception;
+
+        	protected abstract void commit(TXN transaction);
+
+            // 4.KafkaProducer 的两阶段提交就会收到：notifyCheckpointComplete，并调用commit
+        	@Override
+            public final void notifyCheckpointComplete(long checkpointId) throws Exception {
+                commit(pendingTransaction.handle);
+            }
+		}
+
+
+public interface CheckpointListener {
+    // 1.所有subTask向JobManager发送已经进行预提交
+    // 2.JobManager收集所有subTask上送过来的信息，如果已经收到所有subTask都已经完成的预提交
+    // 3.JobManager就会向所以subTask发送：通知CheckPoint完成指令
+
+    void notifyCheckpointComplete(long var1) throws Exception;
+}
+
+
+public interface CheckpointedFunction {
+    // 定期将指定的状态数据保存到StateBackend中；由JobManager触发
+	void snapshotState(FunctionSnapshotContext context) throws Exception;
+
+    // 初始化OperatorState，生命周期方法，构造方法执行后执行一次; 初始化状态或获取历史状态
+	void initializeState(FunctionInitializationContext context) throws Exception;
+
+}

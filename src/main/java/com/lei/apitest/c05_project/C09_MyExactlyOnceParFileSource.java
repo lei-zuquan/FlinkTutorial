@@ -83,7 +83,7 @@ public class C09_MyExactlyOnceParFileSource extends RichParallelSourceFunction<T
         flag = false;
     }
 
-    // 定期将制定的状态数据保存到StateBackend中
+    // 定期将指定的状态数据保存到StateBackend中；由JobManager触发
     @Override
     public void snapshotState(FunctionSnapshotContext context) throws Exception {
         // 将历史值清除
@@ -93,7 +93,7 @@ public class C09_MyExactlyOnceParFileSource extends RichParallelSourceFunction<T
         offsetState.add(offset);
     }
 
-    // 初始化OperatorState，生命周期方法，构造方法执行后执行一次
+    // 初始化OperatorState，生命周期方法，构造方法执行后执行一次; 初始化状态或获取历史状态
     @Override
     public void initializeState(FunctionInitializationContext context) throws Exception {
         // 定义一个状态描述器
