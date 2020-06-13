@@ -34,6 +34,9 @@ public class FlinkUtils {
             ParameterTool parameters,
             Class<? extends DeserializationSchema<T>> clazz) throws IllegalAccessException, InstantiationException {
 
+        // 设置全局的参数，以后在自种算子里就可以拿到全局参数
+        env.getConfig().setGlobalJobParameters(parameters);
+
         // 开启CheckPointing，同时开启重启策略
         env.enableCheckpointing(parameters.getLong("checkpoint-interval", 5000L), CheckpointingMode.EXACTLY_ONCE);
         // 设置固定延迟固定次数重启

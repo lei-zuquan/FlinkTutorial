@@ -2,9 +2,17 @@ package com.lei.apitest.c05_project;
 
 import com.lei.apitest.util.FlinkUtils;
 import com.lei.apitest.util.FlinkUtilsV1;
+import com.lei.apitest.util.MyRedisSink;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.api.java.tuple.Tuple;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.KeyedStream;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 
 /**
  * @Author: Lei
@@ -38,7 +46,21 @@ public class C10_FlinkKafkaToRedis {
 
         DataStream<String> lines = FlinkUtils.createKafkaStream(parameters, SimpleStringSchema.class);
 
-        lines.print();
+        SingleOutputStreamOperator<Tuple2<String, Integer>> wordAndOne = lines.map(w -> Tuple2.of(w, 1))
+                .returns(Types.TUPLE(Types.STRING, Types.INT));
+
+        // 在java，认为元素是一个特殊的集合，脚标是从0开始；因为Flink底层源码是java编写的
+        KeyedStream<Tuple2<String, Integer>, Tuple> keyed = wordAndOne.keyBy(0);
+        SingleOutputStreamOperator<Tuple2<String, Integer>> summed = keyed.sum(1);
+
+        // 数据格式转换及写入redis
+        summed.map(new MapFunction<Tuple2<String, Integer>, Tuple3<String, String, String>>() {
+            @Override
+            public Tuple3<String, String, String> map(Tuple2<String, Integer> tp) throws Exception {
+                return Tuple3.of("Word_Count", tp.f0, tp.f1.toString());
+            }
+        }).addSink(new MyRedisSink());
+
 
         FlinkUtils.getEnv().execute("C10_FlinkKafkaToRedis");
 
