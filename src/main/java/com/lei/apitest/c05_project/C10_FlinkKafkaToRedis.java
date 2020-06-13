@@ -29,6 +29,13 @@ public class C10_FlinkKafkaToRedis {
         // 而不是放在maven 项目的resources中，因为打完包后，想要修改就不太方便了
         // Flink 官方最佳实践
         ParameterTool parameters = ParameterTool.fromPropertiesFile(args[0]);
+        // # topic:activity10 分区3，副本2
+        // # 创建topic
+        // kafka-topics --create --zookeeper node-01:2181,node-02:2181,node-03:2181 --replication-factor 2 --partitions 3 --topic activity10
+        //
+        // # 创建生产者
+        // kafka-console-producer --broker-list node-01:9092,node-02:9092,node-03:9092 --topic activity10
+
         DataStream<String> lines = FlinkUtils.createKafkaStream(parameters, SimpleStringSchema.class);
 
         lines.print();

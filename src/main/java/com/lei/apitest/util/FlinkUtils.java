@@ -10,6 +10,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 
 import java.util.Arrays;
 import java.util.List;
@@ -64,7 +65,7 @@ public class FlinkUtils {
         List<String> topicList = Arrays.asList(split);
 
         // KafkaSource
-        FlinkKafkaConsumer<T> kafkaConsumer = new FlinkKafkaConsumer<T>(
+        FlinkKafkaConsumer011<T> kafkaConsumer = new FlinkKafkaConsumer011<T>(
                 topicList,
                 clazz.newInstance(),
                 props);
