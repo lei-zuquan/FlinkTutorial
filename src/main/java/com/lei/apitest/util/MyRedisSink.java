@@ -29,7 +29,7 @@ public class MyRedisSink extends RichSinkFunction<Tuple3<String, String, String>
         int db = params.getInt("redis.db", 0);
 
         jedis = new Jedis(host, 6379, 5000);
-        jedis.auth(passWord);
+        //jedis.auth(passWord);
         jedis.select(db);
     }
 
