@@ -1,7 +1,6 @@
 package com.lei.apitest.c06_apps;
 
 import com.lei.apitest.util.FlinkUtils;
-import com.lei.apitest.z_other_learn.c01_value_state.ValueStateOperate;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
@@ -11,6 +10,8 @@ import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.shaded.guava18.com.google.common.hash.BloomFilter;
+import org.apache.flink.shaded.guava18.com.google.common.hash.Funnels;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
@@ -59,8 +60,15 @@ bloom过虑器、bitMap、hyperLogLog(size可以计数)
 
 回到公司进行测试功能性
 
+==========================
+    实时的分布式全局去重，可以使用Redis效率比较低，我们可以将用户的ID存储到State
+    1.定义一个State, State中存储的是HashSet，HashSet的特点是去重，但是HashSet中的数据可能很大甚至内存溢出
+    2.优化：定义一个State, 使用Bloom过虑器，但是Bloom过虑器不能计数，还要再定义一个State用来计数
+
+
+
  */
-public class C02_ActivityCount {
+public class C02_ActivityCountAdvBloomFilter {
     public static void main(String[] args) throws Exception {
 
         ParameterTool parameters = ParameterTool.fromPropertiesFile(args[0]);
@@ -110,43 +118,63 @@ public class C02_ActivityCount {
         // 比如我们想知道A1活动参与的人数
         KeyedStream<C02_ActBean, Tuple> keyed = beanDataStream.keyBy("aid", "type");
 
-        keyed.map(new RichMapFunction<C02_ActBean, Tuple3<String, Integer, Integer>>() {
+        keyed.map(new RichMapFunction<C02_ActBean, Tuple3<String, Integer, Long>>() {
             // 使用HashSet存储不同用户id信息，但是不能够容错；如果subTask挂掉后就从0开始计数
             // HashSet uids = new HashSet<String>();
 
             // 使用KeyState
-            private transient ValueState<HashSet> uidState;
+            private transient ValueState<BloomFilter> uidState;
+
+            // 一个计数的State
+            private transient ValueState<Long> countState;
 
             @Override
             public void open(Configuration parameters) throws Exception {
                 //super.open(parameters);
-                // 定义一个状态描述器
-                ValueStateDescriptor<HashSet> stateDescriptor = new ValueStateDescriptor<>(
+                // 定义一个状态描述器【布隆过虑器】
+                ValueStateDescriptor<BloomFilter> stateDescriptor = new ValueStateDescriptor<>(
                         "uid-state",
-                        HashSet.class
+                        BloomFilter.class
+                );
+
+                // 定义一个状态描述器【次数】
+                ValueStateDescriptor<Long> countDescriptor = new ValueStateDescriptor<Long>(
+                        "count-state",
+                        Long.class
                 );
 
                 // 使用RunTimeContext获取状态
                 uidState = getRuntimeContext().getState(stateDescriptor);
+
+                countState = getRuntimeContext().getState(countDescriptor);
             }
 
             @Override
-            public Tuple3<String, Integer, Integer> map(C02_ActBean bean) throws Exception {
+            public Tuple3<String, Integer, Long> map(C02_ActBean bean) throws Exception {
                 String uid = bean.uid;
-                HashSet uids = uidState.value();
-                if (uids == null) {
-                    uids = new HashSet<>();
+                BloomFilter bloomFilter = uidState.value();
+                if (bloomFilter == null) {
+                    // 初始化一个bloomFilter
+                    bloomFilter = BloomFilter.create(Funnels.unencodedCharsFunnel(), 10000000);
+                    countState.update(0L);
                 }
-                uids.add(uid);
+
+                Long counts = countState.value();
+                // BloomFilter可以判断一定不包含
+                if (!bloomFilter.mightContain(uid)) {
+                    // 将当前用户加入到bloomFilter
+                    bloomFilter.put(uid);
+                    countState.update(counts += 1);
+                }
 
                 // 更新用户信息
-                uidState.update(uids);
+                uidState.update(bloomFilter);
 
-                return Tuple3.of(bean.aid, bean.type, uids.size());
+                return Tuple3.of(bean.aid, bean.type, counts);
             }
         }).print();
 
 
-        FlinkUtils.getEnv().execute("C02_ActivityCount");
+        FlinkUtils.getEnv().execute("C02_ActivityCountAdvBloomFilter");
     }
 }
