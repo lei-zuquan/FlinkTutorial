@@ -79,7 +79,7 @@ public class C02_ActivityCountAdvBloomFilter {
         );
 
         // 为了验证程序出现故障时，能否继续之前的数据恢复
-        DataStreamSource<String> socketTextStream = FlinkUtils.getEnv().socketTextStream("localhost", 7777);
+        DataStreamSource<String> socketTextStream = FlinkUtils.getEnv().socketTextStream("node-01", 7777);
         socketTextStream.map(new MapFunction<String, String>() {
             @Override
             public String map(String value) throws Exception {

@@ -55,6 +55,8 @@ u001,A1,2019-09-02 11:11:11,2,北京市
 u011,A1,2019-09-02 11:11:11,2,北京市
 u012,A1,2019-09-02 11:11:11,2,北京市
 
+u013,A1,2019-09-02 11:11:11,2,北京市
+
 bloom过虑器、bitMap、hyperLogLog(size可以计数)
 
 回到公司进行测试功能性
@@ -71,7 +73,7 @@ public class C02_ActivityCount {
         );
 
         // 为了验证程序出现故障时，能否继续之前的数据恢复
-        DataStreamSource<String> socketTextStream = FlinkUtils.getEnv().socketTextStream("localhost", 7777);
+        DataStreamSource<String> socketTextStream = FlinkUtils.getEnv().socketTextStream("node-01", 7777);
         socketTextStream.map(new MapFunction<String, String>() {
             @Override
             public String map(String value) throws Exception {
