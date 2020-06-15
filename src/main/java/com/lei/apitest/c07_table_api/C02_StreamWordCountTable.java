@@ -24,7 +24,7 @@ import java.util.Arrays;
  */
 
 // spark hadoop flink spark
-public class C01_StreamSqlWordCount {
+public class C02_StreamWordCountTable {
 
     public static void main(String[] args) throws Exception {
         // 实时DataStreamAPI
@@ -44,14 +44,15 @@ public class C01_StreamSqlWordCount {
         });
 
         // 注册成表
-        tableEnv.registerDataStream("t_wordcount", words, "word");
+        Table table = tableEnv.fromDataStream(words, "word");
 
         // 写SQL
-        Table table = tableEnv.sqlQuery("SELECT word, COUNT(1) counts FROM t_wordcount GROUP BY word");
+        Table result = table.groupBy("word") // 分组
+                .select("word, count(1) as counts");// 聚合
 
         //
         //DataStream<Tuple2<Boolean, C01_WordCount>> dataStream = tableEnv.toRetractStream(table, C01_WordCount.class);
-        DataStream<Tuple2<Boolean, Row>> dataStream = tableEnv.toRetractStream(table, Row.class);
+        DataStream<Tuple2<Boolean, Row>> dataStream = tableEnv.toRetractStream(result, Row.class);
 
         dataStream.filter(new FilterFunction<Tuple2<Boolean, Row>>() {
             @Override
@@ -61,7 +62,7 @@ public class C01_StreamSqlWordCount {
         }).print();
 
 
-        env.execute("C01_StreamSqlWordCount");
+        env.execute("C02_StreamWordCountTable");
     }
 }
 
