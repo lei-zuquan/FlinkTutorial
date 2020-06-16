@@ -85,6 +85,12 @@
             <artifactId>flink-statebackend-rocksdb_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-json</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
         <!--<dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table_${scala.binary.version}</artifactId>
