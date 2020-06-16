@@ -1,4 +1,4 @@
-package com.lei.apitest.c07_table_api;
+package com.lei.apitest.c07_sql_api;
 
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;

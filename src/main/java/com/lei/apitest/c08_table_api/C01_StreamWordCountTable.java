@@ -1,4 +1,4 @@
-package com.lei.apitest.c07_table_api;
+package com.lei.apitest.c08_table_api;
 
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
@@ -24,7 +24,7 @@ import java.util.Arrays;
  */
 
 // spark hadoop flink spark
-public class C02_StreamWordCountTable {
+public class C01_StreamWordCountTable {
 
     public static void main(String[] args) throws Exception {
         // 实时DataStreamAPI
