@@ -14,7 +14,7 @@ import org.apache.flink.table.api.java.BatchTableEnvironment;
  * @Modified By:
  * @Description:
  */
-public class C02_WordCountSql {
+public class C02_WordCountSQL {
     public static void main(String[] args) throws Exception {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
         // 创建BatchTable上下文环境
