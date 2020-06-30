@@ -18,14 +18,14 @@ import java.util.concurrent.TimeUnit;
 /*
     自定义可以并行的source
  */
-public class C09_MyParFileSource extends RichParallelSourceFunction<Tuple2<String, String>> {
+public class C09_1_MyParFileSource extends RichParallelSourceFunction<Tuple2<String, String>> {
     private String path;
     private boolean flag = true;
 
-    public C09_MyParFileSource() {
+    public C09_1_MyParFileSource() {
     }
 
-    public C09_MyParFileSource(String path) {
+    public C09_1_MyParFileSource(String path) {
         this.path = path;
     }
 

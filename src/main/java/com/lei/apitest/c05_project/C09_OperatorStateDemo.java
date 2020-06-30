@@ -46,7 +46,7 @@ public class C09_OperatorStateDemo {
             }
         }).print();
 
-        DataStreamSource<Tuple2<String, String>> tp = env.addSource(new C09_MyParFileSource("MyParFile"));
+        DataStreamSource<Tuple2<String, String>> tp = env.addSource(new C09_1_MyParFileSource("MyParFile"));
 
         tp.print();
 
