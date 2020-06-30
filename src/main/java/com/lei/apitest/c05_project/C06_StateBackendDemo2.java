@@ -18,6 +18,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @Description:
  */
 /*
+ 从指定的SavePoint路径恢复历史状态数据
 
 flink standalone向hdfs中checkpoint数据
 注意：
@@ -65,9 +66,10 @@ flink standalone向hdfs中checkpoint数据
 public class C06_StateBackendDemo2 {
     public static void main(String[] args) throws Exception {
 
-        // 状态后端数据存储应该存储在分布式文件系统里，便于管理维护
-        System.setProperty("HADOOP_USER_NAME", "root");
-        System.setProperty("hadoop.home.dir", "/opt/cloudera/parcels/CDH-5.16.1-1.cdh5.16.1.p0.3/bin/");
+        // 状态后端数据存储应该存储在分布式文件系统里，便于管理维护；
+        // 特别说明，如果提交到集群上运行，不需要setProperty
+        //System.setProperty("HADOOP_USER_NAME", "root");
+        //System.setProperty("hadoop.home.dir", "/opt/cloudera/parcels/CDH-5.16.1-1.cdh5.16.1.p0.3/bin/");
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -81,8 +83,8 @@ public class C06_StateBackendDemo2 {
 
         // 设置状态数据存储的后端，本地文件系统
         // 生产环境将StateBackend保存到分布式文件系统，且flink不建议在代码里写checkpoint目录代码，通过flink配置文件进行指定
-        //env.setStateBackend(new FsStateBackend("hdfs://node-01:8020/user/root/sqoop/check_point_dir"));
-        //env.setStateBackend(new FsStateBackend(args[0]));
+        //env.setStateBackend(new FsStateBackend("hdfs://node-01:8020/user/root/flink_checkpoint"));
+        //env.setStateBackend(new FsStateBackend(args[1]));
 
         // 程序异常退出或人为cancel掉，不删除checkpoint的数据
         env.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);

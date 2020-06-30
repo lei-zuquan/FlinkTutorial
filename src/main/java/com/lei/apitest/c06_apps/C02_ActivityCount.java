@@ -1,7 +1,6 @@
 package com.lei.apitest.c06_apps;
 
 import com.lei.apitest.util.FlinkUtils;
-import com.lei.apitest.z_other_learn.c01_value_state.ValueStateOperate;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
