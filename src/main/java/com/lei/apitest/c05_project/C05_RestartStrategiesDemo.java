@@ -15,11 +15,13 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @Modified By:
  * @Description:
  */
+
+// Flink 的重启策略
 public class C05_RestartStrategiesDemo {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 只有开启了checkpointing 才会有重启策略
+        // 只有开启了checkpointing 才会有重启策略，默认保存到JobManager中的内存中
         env.enableCheckpointing(5000); // 开启，检查点周期，单位毫秒；默认是-1，不开启
 
         // 默认的重启策略是固定延迟无限重启

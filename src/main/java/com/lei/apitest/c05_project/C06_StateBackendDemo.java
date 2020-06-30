@@ -17,6 +17,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @Modified By:
  * @Description:
  */
+// Flink 的StateBackend的使用
 public class C06_StateBackendDemo {
     public static void main(String[] args) throws Exception {
 

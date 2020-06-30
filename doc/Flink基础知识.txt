@@ -33,7 +33,11 @@ Flink中的执行图可以分成四层：
                                                  物理执行图：【TaskManager运行】
                                                     JobManager根据ExecutionGraph对Job进行调度后，在各个TaskManager上部署Task后形成的 "图"，并不是一个具体的数据结构
 
-
+Flink的Task和SubTask-划分的依据（叫redistribute，相当于spark中的shuffle（宽依赖））：
+    1.并行度发生变化；比如：之前并行度为4，现在并行度为2，叫：rebalance
+    2.发生keyBy算子，叫HASH
+    3.广播 brodcast
+    4.算子后面调用了 startNewChain/disableChaining
 
 
 Flink支持数据类型：
