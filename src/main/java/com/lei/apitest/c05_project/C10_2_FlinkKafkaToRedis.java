@@ -26,17 +26,22 @@ import org.apache.flink.util.Collector;
  */
 
 /*
+Flink高级工具类封装
 
 --group.id g_10 --topics s1,s2
 
 测试消费Kafka中的数据实现ExactlyOnce
 【提交至集群测试】
 
+同时，记得将配置文件上传到JobManager所在节点
+web ui启动Flink应用，指定参数
+
 将redis停掉
 redis-cli
 AUTH 123456
 
-SHUTDOWN save  // 停掉且将数据保存
+SHUTDOWN save  // 停掉且将数据保存，测试程序是否能正常消费；
+               // 因为redis故障，TaskManager重启，重新读取数据、重新连接redis，连接不上，又重新启动
 
 继续向kafka输入数据:spark spark hadoop hadoop
 
@@ -52,7 +57,14 @@ SHUTDOWN save  // 停掉且将数据保存
     c.重启任务，并指定checkPoint目录（恢复）
     d.查看结果是否正常
 
-barry机制，栅栏，保证任务全启完成后，才会更新偏移量
+barry机制，栅栏（隔离的意思），所有算子都成功才会checkpoint。保证任务全启完成后，才会更新偏移量
+比如：
+Source:Custom Source -> Flat Map -> Map  ------------------- Keyed Aggregation -> Map -> Sink
+只有所有算子执行成功才会checkPoint，如果sink不成功或者中间算子执行失败都不会更新偏离量
+
+barry机制会给数据打上id，数据被切分成很多很多数据，每个数据都会打上id，如果所有数据都成功了，才会更新数据的偏移量
+
+上述是redis故障；下面对Job进行cancel掉，继续输入数据，再次启动Flink Job（指定恢复checkpoint目录）
 
  */
 public class C10_2_FlinkKafkaToRedis {

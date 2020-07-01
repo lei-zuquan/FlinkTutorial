@@ -24,6 +24,8 @@ import java.util.Properties;
  * @Modified By:
  * @Description:
  */
+// Flink高级工具类封装
+
 public class FlinkUtils {
 
     // 创建Flink 流式计算执行环境

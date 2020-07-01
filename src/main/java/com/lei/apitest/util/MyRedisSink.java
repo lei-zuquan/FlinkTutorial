@@ -15,21 +15,25 @@ import redis.clients.jedis.Jedis;
  * @Modified By:
  * @Description:
  */
+// 自定义高级的RedisSink
 public class MyRedisSink extends RichSinkFunction<Tuple3<String, String, String>> {
 
     private transient Jedis jedis;
+
     @Override
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);
 
+        // 获取全局的配置参数
         ParameterTool params = (ParameterTool) getRuntimeContext().getExecutionConfig().getGlobalJobParameters();
 
         String host = params.getRequired("redis.host");
         String passWord = params.getRequired("redis.pwd");
         int db = params.getInt("redis.db", 0);
 
+        // 获取redis超时连接时间
         jedis = new Jedis(host, 6379, 5000);
-        //jedis.auth(passWord);
+        jedis.auth(passWord);
         jedis.select(db);
     }
 
@@ -40,7 +44,6 @@ public class MyRedisSink extends RichSinkFunction<Tuple3<String, String, String>
         }
 
         jedis.hset(value.f0, value.f1, value.f2);
-
     }
 
     @Override
