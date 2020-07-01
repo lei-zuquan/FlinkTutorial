@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 /*
     自定义可以并行的source
+    需要继承RichParallelSourceFunction，重写run与cancel方法
  */
 public class C09_1_MyParFileSource extends RichParallelSourceFunction<Tuple2<String, String>> {
     private String path;

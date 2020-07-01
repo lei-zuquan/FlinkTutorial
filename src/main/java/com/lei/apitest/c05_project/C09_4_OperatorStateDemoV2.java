@@ -16,11 +16,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @Modified By:
  * @Description:
  */
-
-// 测试自定义并行数据源
-// file:///Users/leizuquan/IdeaProjects/FlinkTutorial/check_point_dir
-// echo zzzzzz >> 1.txt   向文件中添加数据
-public class C09_OperatorStateDemo {
+public class C09_4_OperatorStateDemoV2 {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -46,7 +42,7 @@ public class C09_OperatorStateDemo {
             }
         }).print();
 
-        DataStreamSource<Tuple2<String, String>> tp = env.addSource(new C09_1_MyParFileSource("MyParFile"));
+        DataStreamSource<Tuple2<String, String>> tp = env.addSource(new C09_3_MyExactlyOnceParFileSource("MyParFile"));
 
         tp.print();
 

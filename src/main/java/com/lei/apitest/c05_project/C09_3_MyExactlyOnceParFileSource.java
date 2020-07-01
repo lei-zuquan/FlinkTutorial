@@ -28,8 +28,11 @@ import java.util.concurrent.TimeUnit;
 /*
     自定义可以并行的source
     实现tail -f 功能，每次从上一次读取后的位置继续读
+
+    需要继承RichParallelSourceFunction，同时实现CheckpointedFunction接口
+
  */
-public class C09_MyExactlyOnceParFileSource extends RichParallelSourceFunction<Tuple2<String, String>> implements CheckpointedFunction {
+public class C09_3_MyExactlyOnceParFileSource extends RichParallelSourceFunction<Tuple2<String, String>> implements CheckpointedFunction {
     // 记录文件读取路径
     private String path;
     // 记录循环读取文件是否需要被打断
@@ -38,10 +41,10 @@ public class C09_MyExactlyOnceParFileSource extends RichParallelSourceFunction<T
     private long offset = 0;
     private transient ListState<Long> offsetState;
 
-    public C09_MyExactlyOnceParFileSource() {
+    public C09_3_MyExactlyOnceParFileSource() {
     }
 
-    public C09_MyExactlyOnceParFileSource(String path) {
+    public C09_3_MyExactlyOnceParFileSource(String path) {
         this.path = path;
     }
 

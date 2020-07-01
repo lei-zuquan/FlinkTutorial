@@ -19,9 +19,18 @@ import java.util.Properties;
  * @Modified By:
  * @Description:
  */
+// 深入理解KafkaConsumer的偏移量存储位置
 
-// 该节内容存在缺失
-public class C10_KafkaSourceV2 {
+/*
+ 1.测试Kafka offset偏移量checkPoint保存
+ 2.Kafka 开启checkpoint策略，会将offset偏移量保存到StateBackEnd，同时默认也会将offset保存到Kafka特殊的topic（__consumer_offsets）
+ 3.开发人员，可以自已关闭向offset保存到Kafka特殊的topic (不推荐这样做，因为后续监控数据消费状态)
+ 4.如果应用出现故障后，没有指定恢复的checkPoint目录（优先从checkpoint目录），则Flink会从 Kafka特殊的topic读取偏移量，继续消费
+
+/
+ */
+
+public class C10_1_KafkaSourceV2 {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -55,7 +64,8 @@ public class C10_KafkaSourceV2 {
                 props);
 
         // Flink CheckPoint成功后还要向Kafka特殊的topic中写入偏移量
-        kafkaSource.setCommitOffsetsOnCheckpoints(false);
+        // 生产环境，不建议关闭向kafka物殊的topic（__consumer_offsets）
+        //kafkaSource.setCommitOffsetsOnCheckpoints(false);
 
         DataStreamSource<String> words = env.socketTextStream("localhost", 7777);
         words.map(new MapFunction<String, String>() {

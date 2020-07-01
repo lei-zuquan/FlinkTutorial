@@ -55,7 +55,7 @@ SHUTDOWN save  // 停掉且将数据保存
 barry机制，栅栏，保证任务全启完成后，才会更新偏移量
 
  */
-public class C10_FlinkKafkaToRedis {
+public class C10_2_FlinkKafkaToRedis {
     public static void main(String[] args) throws Exception {
         /*ParameterTool parameters = ParameterTool.fromArgs(args);
         */
