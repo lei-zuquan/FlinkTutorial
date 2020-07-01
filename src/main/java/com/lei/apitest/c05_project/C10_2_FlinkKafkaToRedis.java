@@ -62,7 +62,7 @@ barry机制，栅栏（隔离的意思），所有算子都成功才会checkpoin
 Source:Custom Source -> Flat Map -> Map  ------------------- Keyed Aggregation -> Map -> Sink
 只有所有算子执行成功才会checkPoint，如果sink不成功或者中间算子执行失败都不会更新偏离量
 
-barry机制会给数据打上id，数据被切分成很多很多数据，每个数据都会打上id，如果所有数据都成功了，才会更新数据的偏移量
+Barrier机制会给数据打上id，数据被切分成很多很多数据，每个数据都会打上id，如果所有数据都成功了，才会更新数据的偏移量
 
 上述是redis故障；下面对Job进行cancel掉，继续输入数据，再次启动Flink Job（指定恢复checkpoint目录）
 
