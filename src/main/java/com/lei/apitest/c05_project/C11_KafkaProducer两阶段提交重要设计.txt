@@ -1,6 +1,21 @@
 
 首先Kafka在0.11+版本后，支持事务，就是可以预先提交；如果后续成功操作，再次提交确认信息即可，以达到避免脏数据问题
 
+保证事务提交和checkpoint同时成功
+
+1.在checkpoint前预先提交
+2.如果checkpoint成功，再次提交；如果失败，回滚
+
+两阶段提交与checkpoint联动；实现CheckpointedFunction接口snapshotState
+在snapshotState方法中，调用preCommit方法
+
+等所有subTask都成功了，TaskManager通知JobManager，JobManager发送notifyCheckpointComplete指令
+在TwoPhaseCommitSinkFunction类的notifyCheckpointComplete方法中，调用了最终的commit提交
+
+在FlinkKafkaProducer类中commit方法，最终调用producer.commitTransaction
+
+===============================================================
+
 FlinkKafkaProducer 正是借鉴了此设计，采用两阶段提交达到精确Exactly-Once
 
 public class FlinkKafkaProducer<IN>
@@ -12,6 +27,9 @@ public class FlinkKafkaProducer<IN>
             // 5.KafkaProducer被两阶段调用commit完成二次提交
         	protected abstract void commit(TXN transaction);
 	}
+
+
+TwoPhaseCommitSinkFunction与CheckpointedFunction联动
 
 public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
 		extends RichSinkFunction<IN>
