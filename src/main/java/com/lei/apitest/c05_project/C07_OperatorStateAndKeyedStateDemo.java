@@ -25,6 +25,7 @@ import java.util.Properties;
 
 /*
   目的：用来观察OperatorState和KeyedState
+
   Kafka消费者消费数据记录偏移量，消费者对应SubTask使用OperatorState记录偏移量
   KeyBy之后，进行聚合操作，进行历史数据集累加，这些SubTask使用累加分组后的历史就是KeyedState
 

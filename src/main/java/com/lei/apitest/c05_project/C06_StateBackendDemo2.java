@@ -18,6 +18,8 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @Description:
  */
 /*
+ KeyedState与OperatorState介绍与演示
+
  从指定的SavePoint路径恢复历史状态数据
 
 flink standalone向hdfs中checkpoint数据
@@ -79,7 +81,7 @@ public class C06_StateBackendDemo2 {
         // 默认的重启策略是固定延迟无限重启
         //env.getConfig().setRestartStrategy(RestartStrategies.fallBackRestart());
         // 设置固定延迟固定次数重启
-        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, 10000));
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, 1000));
 
         // 设置状态数据存储的后端，本地文件系统
         // 生产环境将StateBackend保存到分布式文件系统，且flink不建议在代码里写checkpoint目录代码，通过flink配置文件进行指定
