@@ -24,25 +24,27 @@ import java.util.stream.Stream;
  */
 public class T01_WordCount {
     public static void main(String[] args) throws Exception {
+        // 获取flink执行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // source
+        // 加载数据源
         DataStreamSource<String> lines = env.socketTextStream("localhost", 7777);
 
-        // transformation
-        SingleOutputStreamOperator<Tuple2<String, Integer>> summed = lines.flatMap(new FlatMapFunction<String, Tuple2<String, Integer>>() {
+        // 数据分析、转换、计算
+        SingleOutputStreamOperator<Tuple2<String, Integer>> sum = lines.flatMap(new FlatMapFunction<String, Tuple2<String, Integer>>() {
             @Override
-            public void flatMap(String line, Collector<Tuple2<String, Integer>> collector) throws Exception {
+            public void flatMap(String line, Collector<Tuple2<String, Integer>> out) throws Exception {
                 String[] words = line.split(" ");
                 for (String word : words) {
-                    collector.collect(Tuple2.of(word, 1));
+                    out.collect(Tuple2.of(word, 1));
                 }
             }
         }).keyBy(0).sum(1);
 
-        // sink
-        summed.print();
+        // 数据输出
+        sum.print();
 
-        env.execute("WordCount");
+        // 任务执行
+        env.execute("T01_WordCount");
     }
 }

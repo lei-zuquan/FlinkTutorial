@@ -3,6 +3,7 @@ package com.flink_demo;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.runtime.state.filesystem.FsStateBackend;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -31,6 +32,8 @@ public class T03_WordCountWithCheckPoint {
         //env.getConfig().setRestartStrategy(RestartStrategies.fallBackRestart());
         // 设置固定延迟固定次数重启
         env.getConfig().setRestartStrategy(RestartStrategies.fixedDelayRestart(3, 2000));
+        // 设置checkpoint策略，为本地文件存储；默认内存存储; 生产环境建议使用hdfs分布式文件存储且配置在flink-conf.yaml文件中
+        env.setStateBackend(new FsStateBackend("file:///Users/leizuquan/IdeaProjects/FlinkTutorial/check_point_dir"));
 
         // source
         DataStreamSource<String> lines = env.socketTextStream("localhost", 7777);

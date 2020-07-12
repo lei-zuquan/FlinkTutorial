@@ -1,0 +1,55 @@
+Flink的State
+----------------------
+Flink架构体系的一大特性是：有状态计算
+    1.有状态计算：在程序内部存储计算产生的中间结果，并提供给后续的Function或算子计算结果使用。
+    2.状态：与时间相关的任务内部数据（计算数据和元数据属性）的快照，在计算过程中会进行持久化
+
+作用：
+    每次计算需要基于上一次计算结果，所以需要通过State将每次计算的中间结果进行持久化
+    出现错误需要从成功的检查点进行State的恢复
+    增量计算，Failover这些机制都需要state的支撑
+
+存储实现
+    基于内存的HeapStateBackend - 在debug模式使用，不建议在生产模式下应用；
+    基于HDFS的FsStateBackend - 分布式文件持久化，每次读写都产生网络IO，整体性能不佳；
+    基于RocksDB的RocksDBStateBackend - 本地文件 + 异步HDFS持久化；
+    还有一个是基于Niagara(Alibaba内部实现)NiagaraStateBackend - 分布式持久化 - 在Alibaba生产环境应用：
+
+    State的分类【按照是否根据key进行分区分为：KeyedState和OperatorState】
+        1.KeyedState
+        表示与key相关的一种state，只能用于KeyedStream类型数据集对应的Functions和Operators之上
+        基中的key是我们在SQL语句中对应的GroupBy、PartitionBy里面的字段
+        KeyedState 是Operator 的特例，区别是KeyedState 事先按照key对数据集进行分区。每个key state
+        仅对应一个Operator和Key的组合
+
+        OperatorState
+        只与算子实例绑定，每个算子实例中持有所有数据元素中的一部分状态数据
+
+        （3）两者都支持并行度发生变化时，进行状态数据的重新分配
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
