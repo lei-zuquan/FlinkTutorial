@@ -33,7 +33,7 @@ public class MyRedisSink extends RichSinkFunction<Tuple3<String, String, String>
 
         // 获取redis超时连接时间
         jedis = new Jedis(host, 6379, 5000);
-        jedis.auth(passWord);
+        //jedis.auth(passWord);
         jedis.select(db);
     }
 
