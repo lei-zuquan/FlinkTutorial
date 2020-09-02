@@ -1,6 +1,5 @@
 package com.lei.apitest.c05_project;
 
-import com.lei.apitest.c05_project.C01_DataToActivityBeanFunction;
 import com.lei.apitest.c05_project.domain.ActivityBean;
 import com.lei.apitest.util.FlinkUtilsV1;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
