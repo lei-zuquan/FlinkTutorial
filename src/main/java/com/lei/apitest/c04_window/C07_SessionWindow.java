@@ -34,9 +34,9 @@ public class C07_SessionWindow {
         SingleOutputStreamOperator<Tuple2<String, Integer>> wordAndCount = lines.map(new MapFunction<String, Tuple2<String, Integer>>() {
             @Override
             public Tuple2<String, Integer> map(String value) throws Exception {
-                String[] fileds = value.split(",");
-                String word = fileds[0];
-                Integer count = Integer.parseInt(fileds[1]);
+                String[] fields = value.split(",");
+                String word = fields[0];
+                Integer count = Integer.parseInt(fields[1]);
                 return Tuple2.of(word, count);
             }
         });
