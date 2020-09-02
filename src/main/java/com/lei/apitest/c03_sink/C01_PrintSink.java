@@ -11,6 +11,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @Modified By:
  * @Description:
  */
+// 在 flink 中 print 属于一种sink
 public class C01_PrintSink {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();

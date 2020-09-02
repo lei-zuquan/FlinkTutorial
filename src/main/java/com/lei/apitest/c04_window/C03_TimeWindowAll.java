@@ -17,7 +17,8 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
  * @Modified By:
  * @Description:
  */
-public class C03_TumblingWindowAll {
+// timeWindowAll 全局 每N间隔将数据收集成一个组
+public class C03_TimeWindowAll {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -31,7 +32,7 @@ public class C03_TumblingWindowAll {
         });
 
         // 不分组，将整体当成一个组
-        // 每5条数据收集成一个组
+        // 每5秒钟将数据收集成一个组
         AllWindowedStream<Integer, TimeWindow> window = nums.timeWindowAll(Time.seconds(5));
 
         // 在窗口中聚合

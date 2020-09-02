@@ -17,7 +17,7 @@ import org.apache.flink.streaming.api.windowing.windows.GlobalWindow;
  */
 
 /*
- 分组后再调用CountWindow，每一个组达到一定的条数才会触发任务执行
+ 分组后再调用CountWindow，每一个组达到一定的条数才会触发窗口执行
  */
 public class C02_CountWindow {
     public static void main(String[] args) throws Exception {

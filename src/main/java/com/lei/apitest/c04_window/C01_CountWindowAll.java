@@ -15,6 +15,8 @@ import org.apache.flink.streaming.api.windowing.windows.GlobalWindow;
  * @Modified By:
  * @Description:
  */
+
+// countWindowAll 全局，每 N条数据触发一个窗口
 public class C01_CountWindowAll {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
