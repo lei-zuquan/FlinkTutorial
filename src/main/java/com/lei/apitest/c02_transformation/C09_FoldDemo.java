@@ -22,7 +22,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 /*
  Fold 算子适合需要从指定数据开始累计的场景；
  */
-public class C09_FlodDemo {
+public class C09_FoldDemo {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -46,14 +46,14 @@ public class C09_FlodDemo {
 
         SingleOutputStreamOperator<String> result = keyed.fold("", new FoldFunction<Tuple2<String, Integer>, String>() {
             @Override
-            public String fold(String accmulator, Tuple2<String, Integer> value) throws Exception {
+            public String fold(String accumulator, Tuple2<String, Integer> value) throws Exception {
                 String word = "";
                 int sum = 0;
-                if (accmulator.equals("")) {
+                if (accumulator.equals("")) {
                     word = value.f0;
                     sum += value.f1;
                 } else {
-                    String[] fields = accmulator.split("-");
+                    String[] fields = accumulator.split("-");
                     word = fields[0];
                     sum = Integer.parseInt(fields[1]) + value.f1;
                 }
@@ -64,7 +64,7 @@ public class C09_FlodDemo {
 
         result.print();
 
-        env.execute("C09_FlodDemo");
+        env.execute("C09_FoldDemo");
 
 
     }

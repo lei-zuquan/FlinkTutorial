@@ -18,7 +18,8 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @Modified By:
  * @Description:
  */
-public class C09_FlodDemo2 {
+// Fold 算子适合需要从指定数据开始累计的场景；本示例是实现计数，且计数从1000开始
+public class C09_FoldDemo2 {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -46,7 +47,7 @@ public class C09_FlodDemo2 {
         result.print();
 
 
-        env.execute("C09_FlodDemo2");
+        env.execute("C09_FoldDemo2");
 
 
     }
