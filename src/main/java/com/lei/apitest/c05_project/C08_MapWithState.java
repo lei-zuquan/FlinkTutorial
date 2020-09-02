@@ -16,8 +16,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 /**
- * @Author: Lei
- * @E-mail: 843291011@qq.com
+ * @Author:
  * @Date: 2020-06-11 9:46
  * @Version: 1.0
  * @Modified By:

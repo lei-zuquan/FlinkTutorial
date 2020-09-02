@@ -9,8 +9,7 @@ import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 /**
- * @Author: Lei
- * @E-mail: 843291011@qq.com
+ * @Author:
  * @Date: 2020-06-12 8:55
  * @Version: 1.0
  * @Modified By:

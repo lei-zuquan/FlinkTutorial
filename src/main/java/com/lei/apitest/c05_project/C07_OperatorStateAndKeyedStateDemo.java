@@ -15,8 +15,7 @@ import org.apache.flink.util.Collector;
 import java.util.Properties;
 
 /**
- * @Author: Lei
- * @E-mail: 843291011@qq.com
+ * @Author:
  * @Date: Created in 11:46 上午 2020/6/6
  * @Version: 1.0
  * @Modified By:

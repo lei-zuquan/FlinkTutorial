@@ -1,8 +1,7 @@
 package com.lei.apitest.c05_project.domain;
 
 /**
- * @Author: Lei
- * @E-mail: 843291011@qq.com
+ * @Author:
  * @Date: Created in 10:15 上午 2020/6/8
  * @Version: 1.0
  * @Modified By:

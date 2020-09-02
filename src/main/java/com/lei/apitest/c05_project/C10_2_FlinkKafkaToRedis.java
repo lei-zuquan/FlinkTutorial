@@ -17,8 +17,7 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.util.Collector;
 
 /**
- * @Author: Lei
- * @E-mail: 843291011@qq.com
+ * @Author:
  * @Date: Created in 9:39 上午 2020/6/13
  * @Version: 1.0
  * @Modified By:

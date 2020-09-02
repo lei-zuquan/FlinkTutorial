@@ -10,13 +10,14 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 /**
- * @Author: Lei
- * @E-mail: 843291011@qq.com
+ * @Author:
  * @Date: 2020-06-09 11:29
  * @Version: 1.0
  * @Modified By:
  * @Description:
  */
+
+// 需求：根据经纬度查询高德API关联位置信息，就是一个普通的 Java程序
 public class C02_A_HttpClientTest {
     public static void main(String[] args) throws Exception {
         double longitude = 116.311805;

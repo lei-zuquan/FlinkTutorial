@@ -11,8 +11,7 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Author: Lei
- * @E-mail: 843291011@qq.com
+ * @Author:
  * @Date: Created in 10:03 上午 2020/6/8
  * @Version: 1.0
  * @Modified By:

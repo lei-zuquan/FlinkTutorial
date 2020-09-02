@@ -21,8 +21,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 
 /**
- * @Author: Lei
- * @E-mail: 843291011@qq.com
+ * @Author:
  * @Date: 2020-06-09 12:43
  * @Version: 1.0
  * @Modified By:

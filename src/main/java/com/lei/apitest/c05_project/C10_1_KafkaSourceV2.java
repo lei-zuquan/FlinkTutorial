@@ -12,8 +12,7 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import java.util.Properties;
 
 /**
- * @Author: Lei
- * @E-mail: 843291011@qq.com
+ * @Author:
  * @Date: Created in 10:01 上午 2020/6/13
  * @Version: 1.0
  * @Modified By:
