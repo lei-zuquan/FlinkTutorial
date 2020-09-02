@@ -22,7 +22,7 @@ import java.util.Arrays;
  */
 public class C01_SourceDemo1 {
     public static void main(String[] args) throws Exception {
-        // 实时计算，创建一个实现的执行环境
+        // 实时计算，创建一个实时的执行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         // 创建抽象的数据集【创建原始的抽象数据集的方法：Source】

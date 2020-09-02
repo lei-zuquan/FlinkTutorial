@@ -43,7 +43,7 @@ public class C01_Map_TransformationDemo1 {
 
         // 方式三：传入功能更加强大的RichMapFunction
         // 使用RichXXX_Function，里面含有open，close方法，比如后续读取数据库的前后操作就可以使用open，close
-        nums.map(new RichMapFunction<Integer, Integer>() {
+        SingleOutputStreamOperator<Integer> map = nums.map(new RichMapFunction<Integer, Integer>() {
             // open，在构造方法之后，map方法执行之前，执行一次，Configuration可以拿到全局配置
             // 用来初始化一下连接，或者初始化或恢复state
             @Override
@@ -67,6 +67,8 @@ public class C01_Map_TransformationDemo1 {
 
         // Sink
         res.print();
+        System.out.println("==================================");
+        map.print();
 
         env.execute("C01_TransformationDemo1");
     }

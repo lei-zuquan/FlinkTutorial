@@ -24,7 +24,7 @@ import java.util.Arrays;
  */
 public class C02_SourceDemo2 {
     public static void main(String[] args) throws Exception {
-        // 实时计算，创建一个实现的执行环境
+        // 实时计算，创建一个实时的执行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         //DataStreamSource<Long> nums = env.fromParallelCollection(new NumberSequenceIterator(1, 10), Long.class);
