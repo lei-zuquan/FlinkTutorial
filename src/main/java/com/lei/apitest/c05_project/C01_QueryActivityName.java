@@ -38,7 +38,7 @@ CREATE TABLE `t_activities` (
   `gmt_modified` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间, 必备字段',
 
   `a_id` VARCHAR(100) NOT NULL COMMENT '活动id',
-  `name` VARCHAR(100) NOT NULL COMMENT '舆情词对应的hashcode',
+  `name` VARCHAR(100) NOT NULL COMMENT '活动名称',
   `last_update` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间, 必备字段',
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
@@ -55,7 +55,7 @@ INSERT INTO `t_activities` (`a_id`, `name`) VALUES ('A4', '年度促销');
 2.启动C01_QueryActivityName
 
 
-3.向Kafka-producer生产数据
+3.通过向Kafka-producer生产数据
 u001,A1,2019-09-02 10:10:11,1,北京市
 u001,A2,2019-09-02 10:10:11,1,北京市
 u001,A3,2019-09-02 10:10:11,1,北京市
@@ -69,7 +69,7 @@ u001,A1,2019-09-02 10:10:11,1,北京市
 u001,A1,2019-09-02 10:10:11,1,北京市
 u001,A1,2019-09-02 10:10:11,1,北京市
 
-希望得到的数据
+希望Flink去MySQL查询此用户得到的礼包匹配数据
 u001,新人礼包,2019-09-02 10:10:11,1,北京市
 u002,新人礼包,2019-09-02 10:11:11,1,辽宁省
 
