@@ -129,14 +129,15 @@ public class C03_AsyncEsRequest extends RichAsyncFunction<String, Tuple2<String,
 
     @Override
     public void asyncInvoke(String key, ResultFuture<Tuple2<String, String>> resultFuture) throws Exception {
-        ActionFuture<GetResponse> actionFuture = client.get(new GetRequest("falvku", "word", key));
+        ActionFuture<GetResponse> actionFuture = client.get(new GetRequest("flink_es_fruit", "fruit", key));
 
         CompletableFuture.supplyAsync(new Supplier<String>() {
             @Override
             public String get() {
                 try {
                     GetResponse response = actionFuture.get();
-                    return response.getSource().get("title").toString();
+                    return response.getSource().values().toString(); // 返回整条匹配的信息
+                    // return response.getSource().get("chinese_name").toString(); // 查询指定字段信息
                 } catch (InterruptedException | ExecutionException e) {
                     return null;
                 }
