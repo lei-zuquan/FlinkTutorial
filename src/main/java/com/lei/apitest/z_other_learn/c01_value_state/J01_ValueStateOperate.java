@@ -24,7 +24,7 @@ import java.util.Arrays;
       保存一个可以更新和检索的值
 
     需求
-      通过valuestate来实现求取平均值
+      通过 valueState来实现求取平均值
  */
 public class J01_ValueStateOperate {
     public static void main(String[] args) throws Exception {
@@ -82,10 +82,10 @@ class  J_CountWindowAverage extends RichFlatMapFunction<Tuple2<Long, Double>, Av
     public void flatMap(Tuple2<Long, Double> input, Collector<Avg_Count> out) throws Exception {
         Avg_Count tmpCurrentSum = sum.value(); //获取到状态当中的值   第一次的时候，这个值获取不到的
         Avg_Count currentSum;
-        if(tmpCurrentSum != null){
+        if (tmpCurrentSum != null) {
             //表示已经获取到了值
             currentSum = tmpCurrentSum;
-        }else{
+        } else {
             //没取到值,默认就给一个初始值
             currentSum = new Avg_Count(0L,0d);
         }
