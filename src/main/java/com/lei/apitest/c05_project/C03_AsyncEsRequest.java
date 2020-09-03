@@ -28,6 +28,76 @@ import java.util.function.Supplier;
  * @Description:
  */
 
+/*
+# flink 操作es 数据
+DELETE /flink_es_fruit
+PUT /flink_es_fruit
+{
+  "settings": {
+      "number_of_shards": 3,
+      "number_of_replicas": 0
+  },
+  "mappings": {
+    "fruit": {
+      "properties": {
+        "chinese_name":{
+          "type":"keyword"
+        },
+        "english_name":{
+          "type":"text",
+          "analyzer": "ik_max_word"
+        },
+        "place":{
+          "type": "text",
+          "analyzer": "ik_smart"
+        }
+      }
+    }
+  }
+}
+
+PUT /flink_es_fruit/fruit/1
+{
+  "chinese_name": "苹果",
+  "english_name": "apple",
+  "place":"中国山东省"
+}
+PUT /flink_es_fruit/fruit/2
+{
+  "chinese_name": "梨",
+  "english_name": "pear",
+  "place":"中国山东省"
+}
+PUT /flink_es_fruit/fruit/3
+{
+  "chinese_name": "香蕉",
+  "english_name": "banana",
+  "place":"中国海南省"
+}
+PUT /flink_es_fruit/fruit/4
+{
+  "chinese_name": "葡萄",
+  "english_name": "banana",
+  "place":"中国新疆自治区"
+}
+PUT /flink_es_fruit/fruit/5
+{
+  "chinese_name": "西瓜",
+  "english_name": "watermelon",
+  "place":"中国广东省"
+}
+
+GET /flink_es_fruit/_search
+
+GET /flink_es_fruit/fruit/_search
+{
+    "query":{
+        "terms":{
+            "place": ["山东省"]
+        }
+    }
+}
+ */
 // 通过 id 查询ES 对应的文档，id 则来自于kafka
 public class C03_AsyncEsRequest extends RichAsyncFunction<String, Tuple2<String, String>> {
 
