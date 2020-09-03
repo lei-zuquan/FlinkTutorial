@@ -56,56 +56,30 @@ import java.util.concurrent.ExecutionException;
  */
 public class ESUtil {
 
-    //TransportClient对象，用于连接ES集群
+    // TransportClient对象，用于连接ES集群
     private static volatile TransportClient client;
 
-    /**
-     * DCL(双端检锁) 机制不一定线程安全,原因是有指令重排的存在,加入volatile可以禁止指令重排
-     *
-     *   原因在于某一个线程在执行到第一次检测,读取到的instance不为null时,instance的引用对象可能没有完成初始化.
-     *
-     * instance=new SingletonDem(); 可以分为以下步骤(伪代码)
-     *
-     * memory=allocate();//1.分配对象内存空间
-     *
-     * instance(memory);//2.初始化对象
-     *
-     * instance=memory;//3.设置instance的指向刚分配的内存地址,此时instance!=null
-     *
-     * 步骤2和步骤3不存在数据依赖关系.而且无论重排前还是重排后程序执行的结果在单线程中并没有改变,因此这种重排优化是允许的.
-     *
-     * memory=allocate();//1.分配对象内存空间
-     *
-     * instance=memory;//3.设置instance的指向刚分配的内存地址,此时instance!=null 但对象还没有初始化完.
-     */
+    private static class TransportClient_Holder {
+        private final static TransportClient INSTANCE = getInstance();
 
-    /**
-     * 同步synchronized(*.class)代码块的作用和synchronized static方法作用一样,
-     * 对当前对应的*.class进行持锁,static方法和.class一样都是锁的该类本身,同一个监听器
-     *
-     * @return
-     * @throws UnknownHostException
-     */
+        private static TransportClient getInstance() {
 
-    public static TransportClient getClient() {
-        if (client == null) {
-            synchronized (TransportClient.class) {
-                if (client == null) {
-                    try {
+            TransportClient tClient = null;
+            try {
 
-                        //解决netty冲突
-                        System.setProperty("es.set.netty.runtime.available.processors", "false");
-                        // 指定ES集群
-                        // 在配置文件vi /opt/elasticsearch-6.2.4/config/elasticsearch.yml
-                        // cluster.name: my-application (需要打开)
-                        // node.name: node-1 (需要打开)
-                        //Settings settings = Settings.builder().put("cluster.name", "my-application").build();
-                        // 创建访问es服务器的客户端
-                        //TransportClient client = new PreBuiltTransportClient(settings)
-                        //        .addTransportAddress(new TransportAddress(InetAddress.getByName("172.19.125.190"), 9300));
+                //解决netty冲突
+                System.setProperty("es.set.netty.runtime.available.processors", "false");
+                // 指定ES集群
+                // 在配置文件vi /opt/elasticsearch-6.2.4/config/elasticsearch.yml
+                // cluster.name: my-application (需要打开)
+                // node.name: node-1 (需要打开)
+                //Settings settings = Settings.builder().put("cluster.name", "my-application").build();
+                // 创建访问es服务器的客户端
+                //TransportClient client = new PreBuiltTransportClient(settings)
+                //        .addTransportAddress(new TransportAddress(InetAddress.getByName("172.19.125.190"), 9300));
 
-                        //构建Settings对象
-                        Class.forName("com.es.constant.ConfigConstant");
+                //构建Settings对象
+                Class.forName("com.es.constant.ConfigConstant");
                         /*
                         Settings settings = Settings.builder().put("cluster.name", ConfigConstant.ES_CLUSTER_NAME).build();
 
@@ -115,25 +89,27 @@ public class ESUtil {
                                 //.addTransportAddress(new TransportAddress(InetAddress.getByName(ConfigConstant.ES_HOST_NAME2), ConfigConstant.ES_TCP_PORT))
                                 .addTransportAddress(new TransportAddress(InetAddress.getByName(ConfigConstant.ES_HOST_NAME), ConfigConstant.ES_TCP_PORT));
                                 */
-                        Settings settings = Settings.builder()
-                                .put("cluster.name", ConfigConstant.ES_CLUSTER_NAME)
-                                .put("client.transport.sniff", true)
-                                .build();
-                        client = new PreBuiltTransportClient(settings);
+                Settings settings = Settings.builder()
+                        .put("cluster.name", ConfigConstant.ES_CLUSTER_NAME)
+                        .put("client.transport.sniff", true)
+                        .build();
+                tClient = new PreBuiltTransportClient(settings);
 
-                        String esIps[] = ConfigConstant.ES_HOST_NAME.split(",");
-                        for (String esIp : esIps) {//添加集群IP列表
-                            TransportAddress transportAddress = new TransportAddress(InetAddress.getByName(esIp), ConfigConstant.ES_TCP_PORT);
-                            client.addTransportAddresses(transportAddress);
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                String esIps[] = ConfigConstant.ES_HOST_NAME.split(",");
+                for (String esIp : esIps) {//添加集群IP列表
+                    TransportAddress transportAddress = new TransportAddress(InetAddress.getByName(esIp), ConfigConstant.ES_TCP_PORT);
+                    tClient.addTransportAddresses(transportAddress);
                 }
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            return tClient;
         }
-        return client;
+    }
+
+    public static TransportClient getClient() {
+        return TransportClient_Holder.getInstance();
     }
 
     /**

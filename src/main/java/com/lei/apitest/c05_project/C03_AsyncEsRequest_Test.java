@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @Modified By:
  * @Description:
  */
+// 通过 id 查询ES 对应的文档，id 则来自于kafka
 public class C03_AsyncEsRequest_Test {
     public static void main(String[] args) throws Exception {
         // 输入参数：activity10 group_id_flink node-01:9092,node-02:9092,node-03:9092

@@ -27,6 +27,8 @@ import java.util.function.Supplier;
  * @Modified By:
  * @Description:
  */
+
+// 通过 id 查询ES 对应的文档，id 则来自于kafka
 public class C03_AsyncEsRequest extends RichAsyncFunction<String, Tuple2<String, String>> {
 
     private static transient TransportClient client;
@@ -35,13 +37,15 @@ public class C03_AsyncEsRequest extends RichAsyncFunction<String, Tuple2<String,
     public void open(Configuration parameters) throws Exception {
         //super.open(parameters);
         // 设置集群名称
+        // 方式一：直接在open方法里编写建立连接，这种不够灵活，后续比如很多地方需要与ES打交道，一一编写
         /*Settings settings = Settings.builder().put("cluster.name", "cluster-elasticsearch-prod").build();
         // 创建client
-        transportClient = new PreBuiltTransportClient(settings).addTransportAddresses(
-                new TransportAddress(InetAddress.getByName("172.19.126.252"), 9300),
-                new TransportAddress(InetAddress.getByName("172.19.126.254"), 9300),
-                new TransportAddress(InetAddress.getByName("172.19.125.200"), 9300)
+        client = new PreBuiltTransportClient(settings).addTransportAddresses(
+                new TransportAddress(InetAddress.getByName("elasticsearch01"), 9300),
+                new TransportAddress(InetAddress.getByName("elasticsearch01"), 9300),
+                new TransportAddress(InetAddress.getByName("elasticsearch01"), 9300)
         );*/
+        // 方法二：通过工具类获取ES的连接，更加友好，体现设计模式的高内聚低耦合
         client = ESUtil.getClient();
     }
 
