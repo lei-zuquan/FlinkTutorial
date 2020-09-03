@@ -33,6 +33,11 @@ u002,A1,2019-09-02 10:11:11,1,121.26757,37.49794
 u001,A1,2019-09-02 10:11:11,2,116.311805,40.028572
 
  */
+
+// 1、统计基于活动id/event_type 数量总和
+// 2、统计基于活动id/event_type/province 数量总和
+// 并将结果写入MySQL/Redis 数据存储中
+
 public class C04_ActivityCount {
     public static void main(String[] args) throws Exception {
         // 输入参数：activity10 group_id_flink node-01:9092,node-02:9092,node-03:9092
@@ -52,7 +57,7 @@ public class C04_ActivityCount {
 
         // 创建一个Redis conf
         FlinkJedisPoolConfig conf = new FlinkJedisPoolConfig.Builder()
-                .setHost("localhost")
+                .setHost("redis-01")
                 .setPort(6379)
                 .setDatabase(3)
                 .build();
