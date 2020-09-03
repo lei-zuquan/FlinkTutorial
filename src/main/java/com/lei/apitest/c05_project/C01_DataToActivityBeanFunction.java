@@ -27,7 +27,7 @@ public class C01_DataToActivityBeanFunction extends RichMapFunction<String, Acti
         // 创建MySQL连接
         // 这里不应该对异常进行捕获，让Flink自行处理，比如重启之类的
         // 如果捕获异常了，则Flink无法捕获到该异常
-        String url = "jdbc:mysql://localhost:3306/flink_big_data?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false";
+        String url = "jdbc:mysql://mysql-01:3306/flink_big_data?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false";
         String user = "root";
         String password = "1234";
         connection = DriverManager.getConnection(url, user, password);

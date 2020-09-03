@@ -34,7 +34,7 @@ public class C03_AsyncMySQLRequest extends RichAsyncFunction<String, String> {
         //super.open(parameters);
         executorService = Executors.newFixedThreadPool(30);
 
-        String url = "jdbc:mysql://localhost:3306/flink_big_data?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false";
+        String url = "jdbc:mysql://mysql-01:3306/flink_big_data?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false";
         String user = "root";
         String password = "1234";
 
