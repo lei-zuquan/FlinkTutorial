@@ -26,7 +26,7 @@ public class C06_StateBackendDemo {
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 只有开启了checkpointing，重启策略才会生效；默认不开启重启策略
+        // 只有开启了checkpoint，重启策略才会生效；默认不开启重启策略
         env.enableCheckpointing(5000); // 开启，检查点周期，单位毫秒；默认是-1，不开启
 
         // 默认的重启策略是固定延迟无限重启

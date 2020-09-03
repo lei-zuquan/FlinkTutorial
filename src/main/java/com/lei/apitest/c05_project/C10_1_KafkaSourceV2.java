@@ -36,7 +36,7 @@ public class C10_1_KafkaSourceV2 {
         // 开启CheckPointing，同时开启重启策略
         env.enableCheckpointing(5000);
         // 设置StateBackend
-        env.setStateBackend(new FsStateBackend("ile:\\\\lei_test_project\\idea_workspace\\FlinkTutorial\\check_point_dir"));
+        env.setStateBackend(new FsStateBackend("file:\\\\lei_test_project\\idea_workspace\\FlinkTutorial\\check_point_dir"));
         // 取消任务checkPoint不删除
         env.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
         // 设置checkPoint的模式
