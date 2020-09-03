@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @Modified By:
  * @Description:
  */
+// flink 通过活动id，从mysql查询活动名称
 public class C03_AsyncMySQLRequest_Test {
     public static void main(String[] args) throws Exception {
         // 输入参数：activity10 group_id_flink node-01:9092,node-02:9092,node-03:9092
