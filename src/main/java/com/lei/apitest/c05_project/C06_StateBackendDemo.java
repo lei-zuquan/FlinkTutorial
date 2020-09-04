@@ -3,6 +3,7 @@ package com.lei.apitest.c05_project;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.runtime.state.StateBackend;
 import org.apache.flink.runtime.state.filesystem.FsStateBackend;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
@@ -35,7 +36,8 @@ public class C06_StateBackendDemo {
         env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, 1000));
 
         // 设置状态数据存储的后端，本地文件系统；默认：状态保存在 TaskManager 的内存中，检查点保存在 JobManager 的内存中
-        env.setStateBackend(new FsStateBackend("file:\\\\lei_test_project\\idea_workspace\\FlinkTutorial\\check_point_dir"));
+        StateBackend stateBackend = new FsStateBackend("file:\\\\lei_test_project\\idea_workspace\\FlinkTutorial\\check_point_dir");
+        env.setStateBackend(stateBackend);
         // 生产环境将StateBackend保存到分布式文件系统
         //env.setStateBackend(new FsStateBackend("hdfs://node-01:8020/user/root/sqoop/flink_state_backend"));
 

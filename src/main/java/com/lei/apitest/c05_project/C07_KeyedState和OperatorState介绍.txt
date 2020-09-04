@@ -10,8 +10,8 @@ Flink 架构体系的一大特性是：有状态计算
     增量计算，Failover这些机制都需要 State的支撑
 
 存储实现
-    基于内存的HeapStateBackend - 在debug模式使用，不建议在生产模式下应用；
-    基于HDFS的FsStateBackend - 分布式文件持久化，每次读写都产生网络IO，整体性能不佳；
+    基于内存的 MemoryStateBackend - 在debug模式使用，不建议在生产模式下应用；
+    基于HDFS的 FsStateBackend - 分布式文件持久化，每次读写都产生网络IO，整体性能不佳；
     基于RocksDB的RocksDBStateBackend - 本地文件 + 异步HDFS持久化；
     还有一个是基于Niagara(Alibaba 内部实现) NiagaraStateBackend - 分布式持久化 - 在Alibaba生产环境应用：
 
