@@ -2,6 +2,7 @@ package com.lei.apitest.c05_project;
 
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.runtime.state.StateBackend;
 import org.apache.flink.runtime.state.filesystem.FsStateBackend;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
@@ -36,7 +37,8 @@ public class C10_1_KafkaSourceV2 {
         // 开启CheckPointing，同时开启重启策略
         env.enableCheckpointing(5000);
         // 设置StateBackend
-        env.setStateBackend(new FsStateBackend("file:\\\\lei_test_project\\idea_workspace\\FlinkTutorial\\check_point_dir"));
+        StateBackend fsStateBackend = new FsStateBackend("file:\\\\lei_test_project\\idea_workspace\\FlinkTutorial\\check_point_dir");
+        env.setStateBackend(fsStateBackend);
         // 取消任务checkPoint不删除
         env.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
         // 设置checkPoint的模式
