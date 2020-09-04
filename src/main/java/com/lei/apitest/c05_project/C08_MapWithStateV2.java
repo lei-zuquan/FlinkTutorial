@@ -10,6 +10,7 @@ import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.runtime.state.StateBackend;
 import org.apache.flink.runtime.state.filesystem.FsStateBackend;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
@@ -34,7 +35,8 @@ public class C08_MapWithStateV2 {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         env.enableCheckpointing(5000);
-        env.setStateBackend(new FsStateBackend("file:\\\\lei_test_project\\idea_workspace\\FlinkTutorial\\check_point_dir"));
+        StateBackend fsStateBackend = new FsStateBackend("file:\\\\lei_test_project\\idea_workspace\\FlinkTutorial\\check_point_dir");
+        env.setStateBackend(fsStateBackend);
 
         DataStreamSource<String> lines = env.socketTextStream("node-01", 7777);
         SingleOutputStreamOperator<Tuple2<String, Integer>> wordAndOne = lines.flatMap(new FlatMapFunction<String, Tuple2<String, Integer>>() {
