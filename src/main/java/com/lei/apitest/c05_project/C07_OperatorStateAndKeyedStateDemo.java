@@ -57,7 +57,7 @@ public class C07_OperatorStateAndKeyedStateDemo {
         props.setProperty("key,deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.setProperty("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         // kafka的消费者不自动提交偏移量，默认kafka自动提交offset,且保存在__consumer_offsets
-        // 而是交给Flink通过checkpointing管理偏移量，则必须开启checkpoint策略，且checkpoint不删除
+        // 而是交给Flink 通过 checkpoint管理偏移量，则必须开启checkpoint策略，且checkpoint不删除
         props.setProperty("enable.auto.commit", "false");
 
         // kafkaSource

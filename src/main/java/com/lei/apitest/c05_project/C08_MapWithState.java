@@ -23,7 +23,7 @@ import org.apache.flink.util.Collector;
  * @Description:
  */
 
-// 自定义State状态计算
+// 自定义State状态计算：实现单词出现次数累加求和功能
 public class C08_MapWithState {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
