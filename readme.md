@@ -9,13 +9,13 @@
 socket通信、本地创建数据、从磁盘文件、从Kafka消息中间件中读取
 
 ### 转换操作Transformation
-- map      \t\t取一个元素并生产一个元素，一个映射函数
-- flatMap
-- fliter
-- keyBy
-- reduce
-- fold
-- Aggregations
+- map: 取一个元素并生产一个元素，一个映射函数
+- flatMap: 取一个元素并产生零个、一个或多个元素
+- filter: 为每个元素评估一个布尔函数，并保留该函数返回true的布尔函数
+- keyBy: 从逻辑上将流划分为不相交的分区，具有相同键的所有记录都分配给同一分区。在内部，keyBy() 是通过哈希分区实现的
+- reduce: 对key-value数据进行“滚动”压缩。将当前元素与最后一个减少的值合并，并发出新值
+- fold: 带有初始值的key-value数据流上的“滚动”折叠。将当前元素与上一个折叠值组合在一起并发出新值
+- Aggregations: 在key-value 数据流上滚动聚合。min和minBy之间的区别是min返回最小值，而minBy返回在此字段中具有最小值的元素（与max和maxBy相同）
 + sum
 + min
 + max
