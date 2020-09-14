@@ -58,9 +58,9 @@ socket通信、本地创建数据、从磁盘文件、从Kafka消息中间件中
 
 # 从容错分析析
 - StateBackend
-       1. MemoryStateBackend 默认保存到内存中，即检查点保存在JobManager内存中，状态保存在TaskManager内存中
-       2. FsStateBackend 可以是磁盘文件"file:\\\dir_checkp"; 生产环境是: "hdfs://node-01:8020/user/dev/sqoop/flink_state_backend"
-       3. RocksDBStateBackend 将正在运行中的状态数据保存在RocksDB数据库中  
+       1. MemoryStateBackend 默认保存到内存中，即检查点保存在JobManager内存中，状态保存在TaskManager内存中  
+       2. FsStateBackend 可以是磁盘文件"file:\\\dir_checkp"; 生产环境是: "hdfs://node-01:8020/user/dev/sqoop/flink_state_backend"  
+       3. RocksDBStateBackend 将正在运行中的状态数据保存在RocksDB数据库中    
 - checkpoint
 
 
