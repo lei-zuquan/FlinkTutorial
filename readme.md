@@ -4,18 +4,29 @@
 从实际项目角度分析：与kafka、mysql、redis、http、elasticsearch
 从容错分析析：StateBackend、checkpoint
 
-# 从数据流向角度分析：Source、Transformation、Sink
+# 从数据流向角度分析
 ### 数据源Source
 socket通信、本地创建数据、从磁盘文件、从Kafka消息中间件中读取
 
 ### 转换操作Transformation
-- map
+- map      \t\t取一个元素并生产一个元素，一个映射函数
 - flatMap
 - fliter
 - keyBy
 - reduce
-- max
 - fold
+- Aggregations
++ sum
++ min
++ max
++ minBy
++ maxBy
+- window
+- union
+- connect
+- split
+- select
+
 
 ### 下沉Sink
 - print
