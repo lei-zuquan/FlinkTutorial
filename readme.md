@@ -16,11 +16,11 @@ socket通信、本地创建数据、从磁盘文件、从Kafka消息中间件中
 - **reduce**: 对key-value数据进行“滚动”压缩。将当前元素与最后一个减少的值合并，并发出新值
 - **fold**: 带有初始值的key-value数据流上的“滚动”折叠。将当前元素与上一个折叠值组合在一起并发出新值
 - **Aggregations**: 在key-value 数据流上滚动聚合。min和minBy之间的区别是min返回最小值，而minBy返回在此字段中具有最小值的元素（与max和maxBy相同）
-       1. sum 
-       2. min 
-       3. max 
-       4. minBy 
-       5. maxBy 
+       1. sum  
+       2. min  
+       3. max  
+       4. minBy  
+       5. maxBy  
 - **window**
 - **union**
 - **connect**
