@@ -84,29 +84,29 @@ socket通信、本地创建数据、从磁盘文件、从Kafka消息中间件中
 
 # Flink 相关的深度技术博客链接
 
-[1. Flink —— 什么是Flink？](https://blog.csdn.net/weixin_32265569/article/details/108572221)
-[2. 超全干货--Flink思维导图，花了3周左右编写、校对](https://blog.csdn.net/weixin_32265569/article/details/107426591)
-[3. 大解密：Flink恰巧语义一次消费，怎么保证](https://blog.csdn.net/weixin_32265569/article/details/107439769)
-[4. Flink 容错机制 —— CheckPoint【含示例源码】](https://blog.csdn.net/weixin_32265569/article/details/107439769)
-[5. Flink实战 —— 读取Kafka数据并与MySQL数据关联【附源码】](https://blog.csdn.net/weixin_32265569/article/details/108367968)
-[6. Flink —— StateBackend 状态后端](https://blog.csdn.net/weixin_32265569/article/details/108449983)
+[1. Flink —— 什么是Flink？](https://blog.csdn.net/weixin_32265569/article/details/108572221)  
+[2. 超全干货--Flink思维导图，花了3周左右编写、校对](https://blog.csdn.net/weixin_32265569/article/details/107426591)  
+[3. 大解密：Flink恰巧语义一次消费，怎么保证](https://blog.csdn.net/weixin_32265569/article/details/107439769)  
+[4. Flink 容错机制 —— CheckPoint【含示例源码】](https://blog.csdn.net/weixin_32265569/article/details/107439769)  
+[5. Flink实战 —— 读取Kafka数据并与MySQL数据关联【附源码】](https://blog.csdn.net/weixin_32265569/article/details/108367968)  
+[6. Flink —— StateBackend 状态后端](https://blog.csdn.net/weixin_32265569/article/details/108449983)  
 
 
 <hr style=" border:solid; width:100px; height:1px;" color=#000000 size=1">  
 
 # 文章最后，给大家推荐一些受欢迎的技术博客链接：
 
-[1. JAVA相关的深度技术博客链接](https://blog.csdn.net/weixin_32265569/article/details/107575286)
-[2. Flink 相关技术博客链接](https://blog.csdn.net/weixin_32265569/article/details/108211280)
-[3. Spark 核心技术链接](https://blog.csdn.net/weixin_32265569/article/details/107575521)
-[4. 设计模式 —— 深度技术博客链接](https://blog.csdn.net/weixin_32265569/article/details/108417756)
-[5. 机器学习 —— 深度技术博客链接](https://blog.csdn.net/weixin_32265569/article/details/108417908)
-[6. Hadoop相关技术博客链接](https://blog.csdn.net/weixin_32265569/article/details/107575853)
-[7. 超全干货--Flink思维导图，花了3周左右编写、校对](https://blog.csdn.net/weixin_32265569/article/details/107426591)
-[8. 深入JAVA 的JVM核心原理解决线上各种故障【附案例】](https://blog.csdn.net/weixin_32265569/article/details/107699015)
-[9. 请谈谈你对volatile的理解？--最近小李子与面试官的一场“硬核较量”](https://blog.csdn.net/weixin_32265569/article/details/107425491)
-[10. 聊聊RPC通信，经常被问到的一道面试题。源码+笔记，包懂](https://blog.csdn.net/weixin_32265569/article/details/107425756)
-[11. 深入聊聊Java 垃圾回收机制【附原理图及调优方法】](https://blog.csdn.net/weixin_32265569/article/details/107830848#5.6%20%E6%A1%88%E4%BE%8B)
+[1. JAVA相关的深度技术博客链接](https://blog.csdn.net/weixin_32265569/article/details/107575286)  
+[2. Flink 相关技术博客链接](https://blog.csdn.net/weixin_32265569/article/details/108211280)   
+[3. Spark 核心技术链接](https://blog.csdn.net/weixin_32265569/article/details/107575521)  
+[4. 设计模式 —— 深度技术博客链接](https://blog.csdn.net/weixin_32265569/article/details/108417756)  
+[5. 机器学习 —— 深度技术博客链接](https://blog.csdn.net/weixin_32265569/article/details/108417908)  
+[6. Hadoop相关技术博客链接](https://blog.csdn.net/weixin_32265569/article/details/107575853)  
+[7. 超全干货--Flink思维导图，花了3周左右编写、校对](https://blog.csdn.net/weixin_32265569/article/details/107426591)  
+[8. 深入JAVA 的JVM核心原理解决线上各种故障【附案例】](https://blog.csdn.net/weixin_32265569/article/details/107699015)  
+[9. 请谈谈你对volatile的理解？--最近小李子与面试官的一场“硬核较量”](https://blog.csdn.net/weixin_32265569/article/details/107425491)  
+[10. 聊聊RPC通信，经常被问到的一道面试题。源码+笔记，包懂](https://blog.csdn.net/weixin_32265569/article/details/107425756)  
+[11. 深入聊聊Java 垃圾回收机制【附原理图及调优方法】](https://blog.csdn.net/weixin_32265569/article/details/107830848#5.6%20%E6%A1%88%E4%BE%8B)  
 
 
 <hr style=" border:solid; width:100px; height:1px;" color=#000000 size=1">  
