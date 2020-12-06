@@ -7,7 +7,8 @@ import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 /**
  * @Author: Lei
  * @E-mail: 843291011@qq.com
@@ -22,7 +23,12 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  在Flink中叫redistrute
  */
 public class C04_KeyByDemo1 {
+
+    private static Logger LOG = LoggerFactory.getLogger(C04_KeyByDemo1.class);
+
     public static void main(String[] args) throws Exception {
+        LOG.info("This message contains {} placeholders. {}", 2, "Yippie");
+
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         // 直接输入的就是单词
