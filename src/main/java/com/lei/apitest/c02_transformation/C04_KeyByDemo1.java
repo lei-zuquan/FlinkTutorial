@@ -27,7 +27,11 @@ public class C04_KeyByDemo1 {
     private static Logger LOG = LoggerFactory.getLogger(C04_KeyByDemo1.class);
 
     public static void main(String[] args) throws Exception {
-        LOG.info("This message contains {} placeholders. {}", 2, "Yippie");
+        LOG.error("This message contains {} placeholders. {}", 1, "error");
+        LOG.warn("This message contains {} placeholders. {}", 2, "warn");
+        LOG.debug("This message contains {} placeholders. {}", 3, "debug");
+        LOG.info("This message contains {} placeholders. {}", 4, "info");
+        LOG.trace("This message contains {} placeholders. {}", 5, "trace");
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
