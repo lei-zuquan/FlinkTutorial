@@ -209,6 +209,13 @@
             <version>0.1.54</version>
         </dependency>
 
+        <!-- 通过开源中间件写数据到clickhouse，依赖 -->
+        <dependency>
+            <groupId>ru.ivi.opensource</groupId>
+            <artifactId>flink-clickhouse-sink</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+
         <!-- slf4j 日志门面 它只是一个日志接口，还需要导入具体的日志实现 -->
         <dependency>
             <groupId>org.slf4j</groupId>
