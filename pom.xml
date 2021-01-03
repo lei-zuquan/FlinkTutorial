@@ -202,6 +202,12 @@
             <version>4.1.2</version>
         </dependency>
 
+        <!-- 写入数据到clickhouse -->
+        <dependency>
+            <groupId>ru.yandex.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <version>0.1.54</version>
+        </dependency>
 
         <!-- slf4j 日志门面 它只是一个日志接口，还需要导入具体的日志实现 -->
         <dependency>
