@@ -114,7 +114,7 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-api-java-bridge_2.11</artifactId>
-            <version>${flink.version}</version>
+            <version>1.10.1</version>
             <scope>compile</scope>
         </dependency>
 
@@ -128,46 +128,46 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-json</artifactId>
-            <version>${flink.version}</version>
+            <version>1.10.1</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-statebackend-rocksdb_2.11</artifactId>
-            <version>${flink.version}</version>
+            <version>1.10.1</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpasyncclient</artifactId>
-            <version>4.1.4</version>
+            <version>4.1.5</version>
         </dependency>
 
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.44</version>
+            <version>8.0.31</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.3</version>
+            <version>4.5.13</version>
         </dependency>
 
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>1.1.10</version>
+            <version>1.2.22</version>
         </dependency>
 
         <!-- com.alibaba.fastjson.JSONObject -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.33</version>
+            <version>1.2.83_noneautotype</version>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
@@ -178,13 +178,13 @@
         <dependency>
             <groupId>org.apache.bahir</groupId>
             <artifactId>flink-connector-redis_2.11</artifactId>
-            <version>1.0</version>
+            <version>1.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.2</version>
+            <version>4.5.13</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -199,14 +199,14 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpasyncclient</artifactId>
-            <version>4.1.2</version>
+            <version>4.1.5</version>
         </dependency>
 
         <!-- 写入数据到clickhouse -->
         <dependency>
             <groupId>ru.yandex.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.1.54</version>
+            <version>0.3.2</version>
         </dependency>
 
         <!-- 通过开源中间件写数据到clickhouse，依赖 -->
@@ -227,7 +227,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.12</version>
+            <version>1.7.34</version>
         </dependency>
         <!-- 导入适配器后，再导入具体的实现类 -->
         <dependency>
@@ -239,7 +239,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.1</version>
             <scope>compile</scope>
         </dependency>
 
